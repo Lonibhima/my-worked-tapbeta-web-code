@@ -1,0 +1,100 @@
+.main {
+  min-height: 400px;
+  min-height: calc(100vh - 288px);
+  padding: 7px;
+  margin-top: 3rem;
+}
+
+.logo-div {
+  display: flex;
+  font-size: 16px;
+  font-weight: 600 !important;
+}
+
+.help {
+  margin-left: 8%;
+}
+
+.logo-space {
+  margin-left: 45px;
+}
+
+.register {
+  margin-top: -2px;
+  font-weight: 600 !important;
+}
+
+.sm-logo {
+  margin-top: 8px;
+}
+
+.mySelect {
+  margin-top: 4px;
+  position: absolute;
+}
+
+.lang-button {
+  margin-left: 8%;
+}
+
+.side-nav-header {
+  display: flex;
+}
+
+.chat-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #FFFFFF;
+}
+
+.message {
+  bottom: 4rem;
+  background: #00A8CC;
+  box-shadow: 0px 0px 4px rgba(20, 40, 80, 0.2);
+  border-radius: 20px 0px 20px 2px;
+  opacity: 1;
+  width: 6rem;
+}
+
+.nav-active {
+  border-bottom: 2px solid #00A8CC;
+}
+
+.side-nav-img {
+  width: 65%;
+  height: 50%;
+  margin-top: 13px;
+  margin-right: 3rem;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  z-index: 2000;
+  min-width: 100%;
+}
+
+.sidenav {
+  width: 250px;
+  padding: 8px 16px;
+  position: fixed;
+}
+.sidenav .divider {
+  margin: 8px 0;
+}
+
+.search-box {
+  margin-left: 25px;
+}
+
+.cart-items-count {
+  position: absolute;
+  top: -3px;
+  left: 26px;
+  background: #f44336;
+  height: 18px;
+  width: 18px;
+  line-height: 18px;
+  border-radius: 50%;
+  font-size: 11px;
+}

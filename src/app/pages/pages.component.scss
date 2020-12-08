@@ -1,0 +1,85 @@
+.main{
+    min-height: 400px;
+    min-height: calc(100vh - 288px);
+    padding: 7px;
+    margin-top: 3rem;
+
+
+}
+
+.rounded-circle {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-div {
+    display: flex;
+    font-size: 16px;
+    font-weight: 600 !important;
+}
+
+.help {
+    margin-left: 8%;
+}
+
+.logo-space {
+    margin-left: 45px;
+}
+
+.register {
+    margin-top: -2px;
+    font-weight: 600 !important;
+}
+
+.sm-logo {
+    margin-top: 8px;
+    margin-left: 15px;
+}
+
+.mySelect {
+    margin-top: 4px;
+    position: absolute;
+}
+
+.lang-button {
+margin-left: 8%;
+}
+
+.side-nav-header {
+    display: flex;
+}
+
+.chat-title {
+    font-weight: 600;
+font-size: 16px;
+color: #FFFFFF;
+}
+
+.message {
+    bottom: 4rem;
+    background: #00A8CC;
+box-shadow: 0px 0px 4px rgba(20, 40, 80, 0.2);
+border-radius: 20px 0px 20px 2px;
+opacity: 1;
+width: 6rem;
+}
+
+.nav-active {
+    border-bottom: 2px solid #00A8CC;
+}
+
+
+.header {
+    position: fixed;
+    top: 0;
+    z-index: 2000;
+    min-width: 100%;
+
+}
+
+.about-us{
+    margin-left: 8%;
+}
+.log-out-button{
+    width: 100%;
+}

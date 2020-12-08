@@ -1,0 +1,946 @@
+<!-- <div class="container"> -->
+<app-main-carousel [slides]="slides"></app-main-carousel> 
+
+<div *ngIf="countries; else loading">
+
+<div class="top-up" fxShow="false" fxShow.gt-md *ngIf="nowLaunched">
+    <mat-tab-group *ngIf="!showDataSummary && !showAirtimeSummary"> 
+      <mat-tab label="Airtime">
+  <form [formGroup]="airtimeForm" class="mt-1">
+
+      <div class="row">
+          <div class="col-sm-12 form-padding">
+
+      <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startAirtimeCountryFilter()">
+        <div class="number-input">
+          <div class="number-input__wrapper">
+            <span>
+                <img *ngIf="airtimeForm.get('flag').value"
+                src="{{airtimeForm.get('flag').value}}"
+                class="top-up-logo">
+                
+            </span> 
+          <input matInput type="text" formControlName="country"
+          (input)="airtimeCountryChange()"
+          required [matAutocomplete]= "airtimeCountrySelect"
+          placeholder="Select Country"
+          >
+          <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+          <mat-autocomplete autoActiveFirstOption #airtimeCountrySelect="matAutocomplete"
+          (optionSelected)="onAirtimeCountrySelected()">
+              <mat-option *ngFor="let country of airtimeFilteredCountries" [value]="country.name">
+                  {{country.name}}
+              </mat-option>
+            </mat-autocomplete>
+        </div>
+      </div>
+      <mat-error>Country is required</mat-error>
+  </mat-form-field>
+  <mat-error class="error-text-class" *ngIf="!airtimeForm.get('selected').value
+  && airtimeForm.get('country').valid">Please select an option from the list</mat-error>
+  </div>
+  <div class="col-sm-12 form-padding">
+
+      <!-- <mat-label>Phone Number</mat-label> -->
+      <mat-form-field  appearance="outline" class="w-100 mt-1">
+            <div class="number-input">
+              <div class="number-input__wrapper">
+          <span class="country-code">{{ airtimeForm.get('callingCodes').value }}</span> 
+          <input matInput maxlength="10" placeholder="Enter Phone Number" formControlName="customerId"
+          (input)="airtimePhoneNumberChanged()" required>
+              </div>
+            </div>
+          <mat-error>Phone Number is required</mat-error>
+      </mat-form-field>
+      </div>
+
+      <div class="col-sm-12 form-padding">
+        <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startAirtimeBillerFilter()">
+          <div class="number-input">
+            <div class="number-input__wrapper">
+              <span>
+                <img *ngIf="airtimeForm.get('networkLogo').value"
+                src="{{airtimeForm.get('networkLogo').value}}"
+                class="top-up-logo">
+                
+            </span> 
+            <input matInput type="text" placeholder="Select Operator" 
+            formControlName="billerName" (input)="airtimeBillerChanged()"
+            required [matAutocomplete]= "airtimeBillerSelect">
+            <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+            <mat-autocomplete autoActiveFirstOption #airtimeBillerSelect="matAutocomplete"
+            (optionSelected)="onAirtimeBillerSelected($event.option.value)">
+                <mat-option *ngFor="let biller of airtimeOperators" [value]="biller.name">
+                    {{biller.name}}
+                </mat-option>
+              </mat-autocomplete>
+
+
+          </div>
+        </div>
+        <mat-error>Operator is required</mat-error>
+
+    </mat-form-field>
+    <mat-error class="error-text-class"
+    *ngIf="airtimeOperators?.length < 1 
+    && airtimeForm.get('country').valid"
+    >Sorry, No supported operators for airtime in this country
+  </mat-error>
+      </div>
+
+      <div class="col-sm-12 form-padding">
+
+      <!-- <mat-label>Amount</mat-label> -->
+
+      <mat-form-field appearance="outline" class="w-100 mt-1">
+        <div class="number-input">
+            <div class="number-input__wrapper">
+        <span class="country-code">{{ airtimeForm.get('currencySymbol').value }}</span> 
+        <input matInput type="text" placeholder="Enter Amount" formControlName="amount" required>
+    </div>
+          </div>
+          <mat-error>Amount is required</mat-error>
+      </mat-form-field>
+      <mat-error class="error-text-amount"
+      *ngIf="airtimeForm.get('maxAmount').value > 0">Maximum amount for this operator is {{airtimeForm.get('maxAmount').value | currency: airtimeForm.get('currencySymbol').value}}</mat-error>
+
+      </div>
+      <div class="col-sm-12" *ngIf="airtimeForm.get('customerId').value">
+        <mat-checkbox  formControlName="isDefault" class="mr-3">
+          Set as default
+        </mat-checkbox>
+      </div>
+    
+      <div class="col-sm-6">
+          <span class="tertiary-color auto mouse-pointer" (click)="autoTopUp()">Schedule Auto top up</span>
+      </div>
+    
+      <div class="col-sm-6">
+        <div class="input-group ml-2 mr-2 mouse-pointer"
+        (click)="multiple()" fxLayoutAlign="end">
+            <div class="input-group-prepend mb-2">
+                <mat-icon class="top-beta-icon payment-icon">add_circle</mat-icon>
+            </div>
+            <span class="primary-text add-text">Multiple Recharge</span>
+        </div>
+      </div>
+  </div>
+
+
+
+      <div class="text-center mt-2 mb-3">
+          <button type="button" [disabled]="airtimeForm.invalid" mat-raised-button class="primary-button form-button  update-button"
+          (click)="showAirtimeSummary = true">Recharge
+          </button>
+      </div>                  
+  </form>
+  </mat-tab>
+  <mat-tab label="Data">
+      <form [formGroup]="dataForm" class="mt-1">
+
+          <div class="row">
+            <div class="col-sm-12 form-padding">
+              <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startDataCountryFilter()">
+                <div class="number-input">
+                  <div class="number-input__wrapper">
+                    <span>
+                      <img *ngIf="dataForm.get('flag').value"
+                      src="{{dataForm.get('flag').value}}"
+                      class="top-up-logo">
+                      
+                  </span> 
+                  <input matInput type="text" formControlName="country"
+                  (input)="dataCountryChange()"
+                  required [matAutocomplete]= "countrySelect" placeholder="Select Country">
+                  <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                  <mat-autocomplete autoActiveFirstOption #countrySelect="matAutocomplete"
+                  (optionSelected)="onDataCountrySelected($event.option.value)">
+                      <mat-option *ngFor="let country of dataFilteredCountries" [value]="country.name">
+                          {{country.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                </div>
+              </div>
+              <mat-error>Country is required</mat-error>
+          </mat-form-field>
+      <mat-error class="error-text-class" *ngIf="!dataForm.get('selected').value
+      && dataForm.get('country').value">Please select an option from the list</mat-error>
+
+            </div>
+      <div class="col-sm-12 form-padding">
+
+          <mat-form-field  appearance="outline" class="w-100 mt-1">
+                <div class="number-input">
+                  <div class="number-input__wrapper">
+              <span class="country-code">{{ dataForm.get('callingCodes').value }}</span> 
+              <input matInput maxlength="10" placeholder="Enter Phone Number" formControlName="customerId"
+              required>
+                  </div>
+                </div>
+              <mat-error>Phone Number is required</mat-error>
+          </mat-form-field>
+          </div>
+
+          <div class="col-sm-12 form-padding">
+            <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startDataBillerFilter()">
+              <div class="number-input">
+                <div class="number-input__wrapper">
+                  <span>
+                    <img *ngIf="dataForm.get('networkLogo').value"
+                    src="{{dataForm.get('networkLogo').value}}"
+                    class="top-up-logo">
+                    
+                </span> 
+                <input matInput type="text" placeholder="Select Operator" 
+                formControlName="billerName" (input)="dataBillerChanged()"
+                required [matAutocomplete]= "dataBillerSelect">
+                <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #dataBillerSelect="matAutocomplete"
+                (optionSelected)="onDataBillerSelected($event.option.value)">
+                    <mat-option *ngFor="let biller of dataOperators" [value]="biller.name">
+                        {{biller.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+              </div>
+            </div>
+            <mat-error>Operator is required</mat-error>
+
+        </mat-form-field>
+        <mat-error class="error-text-class" 
+        *ngIf="dataOperators?.length < 1 && dataForm.get('country').valid"
+        >Sorry, No supported operators for data in this country</mat-error>
+
+          </div>
+
+          <div class="col-sm-12">
+            <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startDataFilter()">
+              <div class="number-input">
+                <div class="number-input__wrapper">
+            <span class="country-code">{{ dataForm.get('currencySymbol').value }}</span> 
+                <input matInput type="text" formControlName="amount" (input)="dataChanged()"
+                required [matAutocomplete]= "dataSelect" placeholder="Select Data Bundle">
+                <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                <mat-autocomplete autoActiveFirstOption
+                (optionSelected)="onDataSelected($event.option.value)"
+                #dataSelect="matAutocomplete">
+                    <mat-option *ngFor="let data of filteredData" [value]="data">
+                        {{data}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </div>
+              </div>  
+                <mat-error>Data type is required</mat-error>
+            </mat-form-field>
+            <mat-error class="error-text-class" 
+            *ngIf="dataTopUp?.length < 1 && dataForm.get('billerName').valid"
+            >Sorry, No available data for this operator selection</mat-error>
+          
+          
+          </div>
+
+          <div class="col-sm-12" *ngIf="dataForm.get('customerId').value">
+            <mat-checkbox  formControlName="isDefault" class="mr-3">
+              Set as default
+            </mat-checkbox>
+          </div>
+
+
+          <div class="col-sm-6">
+              <span class="tertiary-color auto mouse-pointer" (click)="autoTopUp()">Schedule Auto top up</span>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="input-group ml-2 mr-2 mouse-pointer"
+            (click)="multiple()">
+                <div class="input-group-prepend mb-2">
+                    <mat-icon class="top-beta-icon payment-icon">add_circle</mat-icon>
+                </div>
+                <span class="primary-text add-text">Multiple Recharge</span>
+            </div>
+          </div>
+
+      </div>
+
+          <div class="text-center mt-2 mb-3">
+              <button type="button" [disabled]="dataForm.invalid" mat-raised-button class="primary-button form-button  update-button"
+              (click)="showDataSummary = true">Recharge
+              </button>
+          </div>                  
+      </form>
+  </mat-tab>
+  </mat-tab-group>
+
+  <div *ngIf="showAirtimeSummary" class="showsummary-class">
+    <div class="input-group ml-2 mr-2 mouse-pointer"
+    (click)="showAirtimeSummary = false" 
+    fxLayoutAlign="end center">
+       <div class="input-group-prepend mb-2">
+           <mat-icon class="top-beta-icon back-icon keyboard_backspace-icon">keyboard_backspace</mat-icon>
+       </div>
+       <span class="primary-text add-text mr-2 back-button-class">Back</span>
+   </div>
+    <div class="primary-text">Payment Summary</div>
+    <mat-divider class="mb-3"></mat-divider>
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Phone Number:
+      </div>
+      <div class="col-sm-5">
+        {{airtimeForm.get('callingCodes').value}}<span>{{airtimeForm.get('customerId').value}}</span>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Operator:
+      </div>
+      <div class="col-sm-5">
+        {{airtimeForm.get('billerName').value}}
+      </div>
+    </div>
+
+    <div class="row mt-2">
+
+      <div class="col-sm-7">
+        Airtime Recharge:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{airtimeForm.get('currencySymbol').value}}<span>{{airtimeForm.get('amount').value}}</span>
+      </div>
+
+    </div>
+
+
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Processing Fee:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{airtimeForm.get('currencySymbol').value}}{{processingFee}}
+      </div>
+
+    </div>
+
+    <div class="row mt-2">
+
+
+      <div class="col-sm-7">
+        Total:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{airtimeForm.get('currencySymbol').value}}{{+(airtimeForm.get('amount').value) + +(processingFee)}}
+      </div>
+    </div>
+
+    <div class="text-center mb-2 confirm-details-class">
+      <button type="button" mat-raised-button class="primary-button form-button"
+      (click)="onBuyAirtime()">Confirm Details
+      </button>
+  </div>  
+
+  </div>
+
+  <div *ngIf="showDataSummary" class="showsummary-class">
+
+    <div class="input-group ml-2 mr-2 mouse-pointer"
+    (click)="showDataSummary = false" 
+    fxLayoutAlign="end center">
+       <div class="input-group-prepend mb-2">
+           <mat-icon class="top-beta-icon back-icon keyboard_backspace-icon">keyboard_backspace</mat-icon>
+       </div>
+       <span class="primary-text add-text mr-2 back-button-class">Back</span>
+   </div>
+    <div class="primary-text">Payment Summary</div>
+    <mat-divider class="mb-3"></mat-divider>
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Phone Number:
+      </div>
+      <div class="col-sm-5">
+        {{dataForm.get('callingCodes').value}}<span>{{dataForm.get('customerId').value}}</span>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Operator:
+      </div>
+      <div class="col-sm-5">
+        {{dataForm.get('billerName').value}}
+      </div>
+    </div>
+
+    <div class="row mt-2">
+
+      <div class="col-sm-7">
+        Data Top up:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{dataForm.get('currencySymbol').value}}{{dataForm.get('amount').value}}
+      </div>
+
+    </div>
+
+
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Processing Fee:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{processingFee}}
+      </div>
+
+    </div>
+
+    <div class="row mt-2">
+
+
+      <div class="col-sm-7">
+        Total:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{dataForm.get('currencySymbol').value}}{{+(trimData(dataForm.get('amount').value)) + +(processingFee)}}
+      </div>
+    </div>
+
+    <div class="text-center mb-2 confirm-details-class">
+      <button type="button" mat-raised-button class="primary-button form-button"
+      (click)="onBuyData()">Confirm Details
+      </button>
+  </div>  
+
+  </div>
+
+  </div>
+
+  <div class="mid-form" fxShow="false" fxShow.lt-lg *ngIf="nowLaunched">
+    <mat-tab-group *ngIf="!showDataSummary && !showAirtimeSummary"> 
+      <mat-tab label="Airtime">
+  <form [formGroup]="airtimeForm" class="mt-2">
+
+      <div class="row">
+        <div class="col-sm-6 form-padding">
+      
+          <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startAirtimeCountryFilter()">
+            <div class="number-input">
+              <div class="number-input__wrapper">
+                <span>
+                    <img *ngIf="airtimeForm.get('flag').value"
+                    src="{{airtimeForm.get('flag').value}}"
+                    class="top-up-logo">
+                    
+                </span> 
+              <input matInput type="text" formControlName="country"
+              (input)="airtimeCountryChange()"
+              required [matAutocomplete]= "airtimeCountrySelect"
+              placeholder="Select Country"
+              >
+              <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+              <mat-autocomplete autoActiveFirstOption #airtimeCountrySelect="matAutocomplete"
+              (optionSelected)="onAirtimeCountrySelected()">
+                  <mat-option *ngFor="let country of airtimeFilteredCountries" [value]="country.name">
+                      {{country.name}}
+                  </mat-option>
+                </mat-autocomplete>
+            </div>
+          </div>
+          <mat-error>Country is required</mat-error>
+      </mat-form-field>
+      <mat-error class="error-text-class" *ngIf="!airtimeForm.get('selected').value
+      && airtimeForm.get('country').valid">Please select an option from the list</mat-error>
+        </div>
+  <div class="col-sm-6 form-padding">
+
+      <mat-form-field  appearance="outline" class="w-100 mt-1">
+            <div class="number-input">
+              <div class="number-input__wrapper">
+          <span class="country-code">{{ airtimeForm.get('callingCodes').value }}</span> 
+          <input matInput maxlength="10" placeholder="Enter Phone Number" formControlName="customerId" 
+          (input)="airtimePhoneNumberChanged()"
+          required>
+              </div>
+            </div>
+
+
+          <mat-error>Phone Number is required</mat-error>
+      </mat-form-field>
+      </div>
+
+      <div class="col-sm-6 form-padding">
+        <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startAirtimeBillerFilter()">
+          <div class="number-input">
+            <div class="number-input__wrapper">
+              <span>
+                <img *ngIf="airtimeForm.get('networkLogo').value"
+                src="{{airtimeForm.get('networkLogo').value}}"
+                class="top-up-logo">
+                
+            </span> 
+            <input matInput type="text" placeholder="Select Operator" 
+            formControlName="billerName" (input)="airtimeBillerChanged()"
+            required [matAutocomplete]= "airtimeBillerSelect">
+            <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+            <mat-autocomplete autoActiveFirstOption #airtimeBillerSelect="matAutocomplete"
+            (optionSelected)="onAirtimeBillerSelected($event.option.value)">
+                <mat-option *ngFor="let biller of airtimeOperators" [value]="biller.name">
+                    {{biller.name}}
+                </mat-option>
+              </mat-autocomplete>
+
+
+          </div>
+        </div>
+        <mat-error>Operator is required</mat-error>
+
+    </mat-form-field>
+    <mat-error
+    class="error-text-class" 
+    *ngIf="airtimeOperators?.length < 1 
+    && airtimeForm.get('country').valid"
+    >Sorry, No supported operators for airtime in this country
+  </mat-error>
+      </div>
+
+      <div class="col-sm-6 form-padding">
+
+        <!-- <mat-label>Amount</mat-label> -->
+  
+        <mat-form-field appearance="outline" class="w-100 mt-1">
+          <div class="number-input">
+              <div class="number-input__wrapper">
+          <span class="country-code">{{ airtimeForm.get('currencySymbol').value }}</span> 
+          <input matInput type="text" placeholder="Enter Amount" formControlName="amount" required>
+      </div>
+            </div>
+            <mat-error>Amount is required</mat-error>
+        </mat-form-field>
+        <mat-error class="max-amout-class"
+        *ngIf="airtimeForm.get('maxAmount').value > 0">Maximum amount for this operator is {{airtimeForm.get('maxAmount').value | currency: airtimeForm.get('currencySymbol').value}}</mat-error>
+  
+        </div>
+
+      <div class="col-sm-12" *ngIf="airtimeForm.get('customerId').value">
+        <mat-checkbox  formControlName="isDefault" class="mr-3">
+          Set as default
+        </mat-checkbox>
+      </div>
+
+  <div class="col-sm-6">
+      <span class="tertiary-color auto mouse-pointer" (click)="autoTopUp()">Schedule Auto top up</span>
+  </div>
+
+  <div class="col-sm-6 mt-1">
+    <div class="input-group ml-2 mr-2 mouse-pointer"
+     (click)="multiple()" fxLayoutAlign="end">
+        <div class="input-group-prepend mb-2">
+            <mat-icon class="top-beta-icon payment-icon">add_circle</mat-icon>
+        </div>
+        <span class="primary-text add-text mr-2">Multiple Recharge</span>
+    </div>
+  </div>
+</div>
+
+
+      <div class="text-center mt-2 mb-3">
+          <button type="button"[disabled]="airtimeForm.invalid" mat-raised-button class="primary-button form-button  update-button"
+          (click)="showAirtimeSummary = true">Recharge
+          </button>
+      </div>                  
+  </form>
+  </mat-tab>
+  <mat-tab label="Data">
+      <form [formGroup]="dataForm" class="mt-2">
+
+          <div class="row">
+            <div class="col-sm-12 form-padding">
+              <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startDataCountryFilter()">
+                <div class="number-input">
+                  <div class="number-input__wrapper">
+                    <span>
+                      <img *ngIf="dataForm.get('flag').value"
+                      src="{{dataForm.get('flag').value}}"
+                      class="top-up-logo">
+                      
+                  </span> 
+                  <input matInput type="text" formControlName="country"
+                  (input)="dataCountryChange()"
+                  required [matAutocomplete]= "countrySelect" placeholder="Select Country">
+                  <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                  <mat-autocomplete autoActiveFirstOption #countrySelect="matAutocomplete"
+                  (optionSelected)="onDataCountrySelected($event.option.value)">
+                      <mat-option *ngFor="let country of dataFilteredCountries" [value]="country.name">
+                          {{country.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                </div>
+              </div>
+              <mat-error>Country is required</mat-error>
+          </mat-form-field>
+      <mat-error class="error-text-class" *ngIf="!dataForm.get('selected').value
+      && dataForm.get('country').value">Please select an option from the list</mat-error>
+
+            </div>
+      <div class="col-sm-6 form-padding">
+
+          <mat-form-field  appearance="outline" class="w-100 mt-1">
+                <div class="number-input">
+                  <div class="number-input__wrapper">
+              <span class="country-code">{{ airtimeForm.get('callingCodes').value }}</span> 
+              <input matInput maxlength="10" placeholder="Enter Phone Number" formControlName="customerId"
+              required>
+                  </div>
+                </div>
+              <mat-error>Phone Number is required</mat-error>
+          </mat-form-field>
+          </div>
+
+          <div class="col-sm-6 form-padding">
+            <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startDataBillerFilter()">
+              <div class="number-input">
+                <div class="number-input__wrapper">
+                  <span>
+                    <img *ngIf="dataForm.get('networkLogo').value"
+                    src="{{dataForm.get('networkLogo').value}}"
+                    class="top-up-logo">
+                    
+                </span> 
+                <input matInput type="text" placeholder="Select Operator" 
+                formControlName="billerName" (input)="dataBillerChanged()"
+                required [matAutocomplete]= "dataBillerSelect">
+                <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #dataBillerSelect="matAutocomplete"
+                (optionSelected)="onDataBillerSelected($event.option.value)">
+                    <mat-option *ngFor="let biller of dataOperators" [value]="biller.name">
+                        {{biller.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+              </div>
+            </div>
+            <mat-error>Operator is required</mat-error>
+
+        </mat-form-field>
+        <mat-error class="error-text-class" 
+        *ngIf="dataOperators?.length < 1 && dataForm.get('country').valid"
+        >Sorry, No supported operators for data in this country</mat-error>
+
+          </div>
+
+          <div class="col-sm-6">
+            <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startDataFilter()">
+              <div class="number-input">
+                <div class="number-input__wrapper">
+            <span class="country-code">{{ dataForm.get('currencySymbol').value }}</span> 
+                <input matInput type="text" formControlName="amount" (input)="dataChanged()"
+                required [matAutocomplete]= "dataSelect" placeholder="Select Data Bundle">
+                <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                <mat-autocomplete autoActiveFirstOption
+                (optionSelected)="onDataSelected($event.option.value)"
+                #dataSelect="matAutocomplete">
+                    <mat-option *ngFor="let data of filteredData" [value]="data">
+                        {{data}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </div>
+              </div>  
+                <mat-error>Data type is required</mat-error>
+            </mat-form-field>
+            <mat-error class="error-text-class" 
+            *ngIf="dataTopUp?.length < 1 && dataForm.get('billerName').valid"
+            >Sorry, No available data for this operator selection</mat-error>
+          
+          </div>
+
+          <div class="col-sm-12" *ngIf="dataForm.get('customerId').value">
+            <mat-checkbox  formControlName="isDefault" class="mr-3">
+              Set as default
+            </mat-checkbox>
+          </div>
+
+
+          <div class="col-sm-6">
+            <span class="tertiary-color auto mouse-pointer" (click)="autoTopUp()">Schedule Auto top up</span>
+        </div>
+      
+        <div class="col-sm-6 mt-1">
+          <div class="input-group ml-2 mr-2 mouse-pointer"
+           (click)="multiple()" fxLayoutAlign="end">
+              <div class="input-group-prepend mb-2">
+                  <mat-icon class="top-beta-icon payment-icon">add_circle</mat-icon>
+              </div>
+              <span class="primary-text add-text mr-2">Multiple Recharge</span>
+          </div>
+        </div>
+    </div>
+
+
+          <div class="text-center mt-2 mb-3">
+              <button type="button" [disabled]="dataForm.invalid" mat-raised-button class="primary-button form-button  update-button"
+              (click)="showDataSummary = true">Recharge
+              </button>
+          </div>                  
+      </form>
+  </mat-tab>
+  </mat-tab-group>
+
+  <div *ngIf="showAirtimeSummary" class="showsummary-class">
+    <div class="input-group ml-2 mr-2 mouse-pointer"
+    (click)="showAirtimeSummary = false" 
+    fxLayoutAlign="end center">
+       <div class="input-group-prepend mb-2">
+           <mat-icon class="top-beta-icon back-icon keyboard_backspace-icon">keyboard_backspace</mat-icon>
+       </div>
+       <span class="primary-text add-text mr-2 back-button-class" >Back</span>
+   </div>
+    <div class="primary-text">Payment Summary</div>
+    <mat-divider class="mb-3"></mat-divider>
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Phone Number:
+      </div>
+      <div class="col-sm-5">
+        {{airtimeForm.get('callingCodes').value}}<span>{{airtimeForm.get('customerId').value}}</span>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Operator:
+      </div>
+      <div class="col-sm-5">
+        {{airtimeForm.get('billerName').value}}
+      </div>
+    </div>
+
+    <div class="row mt-2">
+
+      <div class="col-sm-7">
+        Airtime Recharge:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{airtimeForm.get('currencySymbol').value}}<span>{{airtimeForm.get('amount').value}}</span>
+      </div>
+
+    </div>
+
+
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Processing Fee:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{airtimeForm.get('currencySymbol').value}}{{processingFee}}
+      </div>
+
+    </div>
+
+    <div class="row mt-2">
+
+
+      <div class="col-sm-7">
+        Total:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{airtimeForm.get('currencySymbol').value}}{{+(airtimeForm.get('amount').value) + +(processingFee)}}
+      </div>
+    </div>
+
+    <div class="text-center mb-2 confirm-details-class">
+      <button type="button" mat-raised-button class="primary-button form-button"
+      (click)="onBuyAirtime()">Confirm Details
+      </button>
+  </div>  
+
+  </div>
+
+  <div *ngIf="showDataSummary" class="showsummary-class">
+
+    <div class="input-group ml-2 mr-2 mouse-pointer"
+    (click)="showDataSummary = false" 
+    fxLayoutAlign="end center">
+       <div class="input-group-prepend mb-2">
+           <mat-icon class="top-beta-icon back-icon keyboard_backspace-icon">keyboard_backspace</mat-icon>
+       </div>
+       <span class="primary-text add-text mr-2 back-button-class">Back</span>
+   </div>
+    <div class="primary-text">Payment Summary</div>
+    <mat-divider class="mb-3"></mat-divider>
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Phone Number:
+      </div>
+      <div class="col-sm-5">
+        {{dataForm.get('callingCodes').value}}<span>{{dataForm.get('customerId').value}}</span>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Operator:
+      </div>
+      <div class="col-sm-5">
+        {{dataForm.get('billerName').value}}
+      </div>
+    </div>
+
+    <div class="row mt-2">
+
+      <div class="col-sm-7">
+        Data Top up:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{dataForm.get('currencySymbol').value}}{{dataForm.get('amount').value}}
+      </div>
+
+    </div>
+
+
+    <div class="row mt-2">
+      <div class="col-sm-7">
+        Processing Fee:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{dataForm.get('currencySymbol').value}}{{processingFee}}
+      </div>
+
+    </div>
+
+    <div class="row mt-2">
+
+
+      <div class="col-sm-7">
+        Total:
+      </div>
+      <div class="col-sm-5 primary-text">
+        {{dataForm.get('currencySymbol').value}}{{+(trimData(dataForm.get('amount').value)) + +(processingFee)}}
+      </div>
+    </div>
+
+    <div class="text-center mb-2 confirm-details-class">
+      <button type="button" mat-raised-button class="primary-button form-button"
+      (click)="onBuyData()">Confirm Details
+      </button>
+  </div>  
+
+  </div>
+
+  </div>
+</div>
+
+  <ng-template #loading>
+    <ngx-spinner bdColor="rgba(51,51,51,0.7)" size="large" color="#fff" type="ball-clip-rotate"></ngx-spinner>     
+  </ng-template>
+
+<span class="topbeta-text process">How it works</span>
+<div fxLayout="row wrap" class="info-bar">
+    <div fxFlex="100" fxFlex.gt-xs="33.33">
+        <mat-card class="home-card" ngClass.lt-sm="mt-3" fxLayout="row"  fxLayoutAlign="start center">
+            <img src="assets/images/others/person.png">
+            <div class="content">
+                <p class="how-it-work-section">INITIATE TOP UP</p> 
+                <span class="text-muted m-0">Log in from anywhere in the world, provide recipent's number and amount</span>
+            </div> 
+        </mat-card> 
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="33.33"> 
+        <mat-card class="home-card" ngClass.lt-sm="mt-3" fxLayout="row"  fxLayoutAlign="start center">
+            <img src="assets/images/others/card.png">
+            <div class="content">
+                <p class="how-it-work-section">MAKE PAYMENT</p> 
+                <span class="text-muted m-0">Select your preferred payment method, and confirm your card or biller details</span>
+            </div> 
+        </mat-card>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="33.33"> 
+        <mat-card class="home-card" ngClass.lt-sm="mt-3" fxLayout="row"  fxLayoutAlign="start center">
+            <img src="assets/images/others/phone.png">
+            <div class="content">
+                <p class="top-up-complete-class">TOP UP COMPLETE</p> 
+                <span class="text-muted m-0">Top up is processed and received in seconds</span>
+            </div> 
+        </mat-card>
+    </div>
+</div>
+
+<span class="topbeta-text process">Whats More?</span>
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center flex-end " fxLayoutAlign.lt-md="center center"
+fxLayoutGap="3rem"  class="whats-more">
+
+<div fxFlex="40%" fxLayout="row"  fxFlexAlign="baseline">
+    <div fxLayout="row" fxLayout.gt-sm="column" >
+     <p class="whats-more-sec">Topbeta enables transfer of airtime, digital recharge, mobile money, digital goods and services, through our
+        innovative web and mobile applications. 
+       Our solutions digitally power the future of cross border and digital mobile payments to emerging markets</p>
+    </div>
+</div>
+
+<div fxFlex="50%" fxLayout="row">
+  <div class="video-div">
+    <iframe height="400" width="100%" src="https://www.youtube.com/embed/nrou0kVtH5Y" frameborder="0"
+      allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+</div>
+
+</div>
+
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center flex-end " fxLayoutAlign.lt-md="center center"
+fxLayoutGap="3rem"  class="more-about topbeta-text ">
+
+<div fxFlex="25%" fxLayout="row" fxLayoutAlign="center">
+  <div class="disc disc-1" >
+    <div>
+      <img src="../../../assets/images/carousel/world.png" alt="" class="icons-class">
+      <p class="cred-number1">145+</p>
+    </div>
+  </div>
+  <div class="about-text-class">Countries</div>
+</div>
+
+<div fxFlex="25%" fxLayout="row" fxLayoutAlign="center">
+  <div class="disc disc-1" >
+    <div>
+     <img src="../../../assets/images/carousel/sim-card.png" alt=""  class="icons-class">
+      <p class="cred-number1">700+</p>
+    </div>
+  </div>
+  <div class="about-text-class">Operators</div>
+</div>
+
+<div fxFlex="25%" fxLayout="row" fxLayoutAlign="center">
+  <div class="disc disc-1" >
+    <div>
+     <img src="../../../assets/images/carousel/sim-card.png" alt=""  class="icons-class">
+      <p class="cred-number1">500+</p>
+    </div>
+  </div>
+  <div class="about-text-class">Your Text</div>
+</div>
+
+<div fxFlex="25%" fxLayout="row" fxLayoutAlign="center">
+  <div class="disc disc-1" >
+    <div>
+     <img src="../../../assets/images/carousel/sim-card.png" alt=""  class="icons-class">
+      <p class="cred-number1">200+</p>
+    </div>
+  </div>
+  <div class="about-text-class">Demo Text</div>
+</div>
+</div>
+
+
+<div fxLayout="row wrap" class="info-bar download-div">
+    <div fxFlex="100" fxFlex="70">
+        <mat-card class="blue-card" fxLayout="row"  fxLayoutAlign="start center">
+            <div class="content">
+                <span ngClass.lt-md="download-sm" class="topbeta-text download m-0">Download Topbeta app for better and easier way to top up</span>
+            </div> 
+        </mat-card> 
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="15"> 
+        <mat-card class="blue-card mouse-pointer" fxLayout="row"  fxLayoutAlign="start center">
+            <img src="../../../assets/images/others/Play store badge.svg" class="gpay-img-class">
+        </mat-card>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="15"> 
+        <mat-card class="blue-card mouse-pointer" fxLayout="row"  fxLayoutAlign="start center">
+            <img class="apple" src="../../../assets/images/others/App store badge.svg">
+        </mat-card>
+    </div>
+</div>
+
+<!-- </div> -->

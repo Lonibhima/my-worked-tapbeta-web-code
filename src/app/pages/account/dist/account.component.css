@@ -1,0 +1,47 @@
+.account-sidenav {
+  width: 280px;
+  padding: 2px;
+  box-shadow: 0px 3px 6px #00000029 !important;
+  margin-bottom: 5px;
+}
+.account-sidenav .mat-nav-list {
+  box-sizing: border-box;
+}
+.account-sidenav .mat-nav-list .mat-list-item {
+  height: 36px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.account-sidenav .account-item {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 20px !important;
+  color: #142850 !important;
+}
+.account-sidenav .account-item-active {
+  color: #00A8CC !important;
+}
+
+.account-content {
+  min-height: 400px;
+  padding: 2px;
+  overflow: hidden;
+}
+.account-content.p-left {
+  padding-left: 16px;
+}
+.account-content .legend {
+  display: block !important;
+  margin: auto !important;
+  font-weight: 600;
+}
+.account-content .header-row {
+  background: #fff;
+  padding: 0 16px;
+  height: 56px;
+}
+.account-content .account-wrapper {
+  margin-top: 16px;
+  padding: 16px;
+  background: #fff;
+}

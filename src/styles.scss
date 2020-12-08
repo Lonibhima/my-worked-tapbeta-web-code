@@ -1,0 +1,471 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700");
+@import '~swiper/css/swiper.min.css'; 
+@import "app/theme/styles/base";
+@import "app/theme/styles/theme";
+
+.mouse-pointer {
+    cursor: pointer;
+}
+
+
+.app.green .mat-tab-group.mat-primary .mat-ink-bar, .app.green .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: #00A8CC !important;
+}
+
+mat-icon.mat-icon.notranslate.mouse-pointer.material-icons.mat-icon-no-color {
+    color: #00A8CC !important;
+}
+
+.break {
+    word-wrap: break-word;
+}
+
+.password-warning {
+    color: #142850 !important;
+    margin-top: -19px;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.page-width {
+    max-width: 100% !important;
+}
+
+*:focus {
+    outline: none !important;
+}
+
+.logo-toolbar.mat-toolbar-row {
+    height: 55px;
+}
+
+.mat-primary {
+    color: #142850 !important;
+}
+.network-image {
+    width: 20px;
+}
+
+.accountMenu {
+
+    .mat-menu-content {
+    width: 12rem !important;
+    }
+}
+
+.add-text {
+    margin-left: 35px;
+}
+
+.payment-icon {
+    margin-top: -8px;
+}
+
+.delete-button {
+    border: 1px solid #D80027 !important;
+    color: #D80027 !important;
+    background: transparent;
+    margin: auto !important;
+    display: block !important;
+    line-height: 22px !important;
+    box-shadow: none !important;
+    font-weight: 600 !important;
+}
+
+.red-text {
+    color: #D80027 !important;
+}
+
+.mat-tab-body-content {
+    overflow: hidden !important;
+}
+
+.subscribe-button {
+    border: 1px solid #142850 !important;
+    color: #142850 !important;
+    background: transparent;
+    margin: auto !important;
+    display: block !important;
+    line-height: 22px !important;
+    box-shadow: none !important;
+    font-weight: 600 !important;
+}
+
+.network-name {
+    font-size: 16px;
+}
+.primary-color {
+    color: #142850 !important;
+}
+
+.mat-expansion-panel {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    background: #F1F1F1 !important;
+
+    .mat-expansion-indicator,
+    .mat-expansion-indicator:after {
+      color: #00A8CC !important;
+    }
+}
+
+.top-up-logo {
+    width: 20px;
+    height: 20px;
+    // margin-top: -5px;
+}
+
+.top-beta-icon {
+    color: #00A8CC !important;
+    position: absolute;
+}
+
+.mat-expansion-panel-header {
+    height: 100% !important;
+    padding: 10px 24px !important;
+}
+
+.mat-expansion-panel-body {
+    padding: 16px 24px 16px !important;
+}
+
+.primary-text {
+    color: #142850 !important;
+    font-weight: 600
+}
+
+.form-new {
+    font-size: 16px;
+    display: block;
+    text-align: center;
+}
+.auth-welcome {
+    color: #00A8CC;
+    font-weight: bold;
+font-size: 28px;
+}
+
+.image-text {
+    text-align: center;
+}
+
+.auth-intro {
+color: #FFFFFF;
+font-weight: 600;
+font-size: 16px;
+}
+.form-route {
+    color: #0F52BA;
+}
+
+.display {
+    display: block;
+}
+
+.float {
+    float: left;
+}
+
+.align {
+    text-align: center;
+}
+
+.form-type {
+font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 19px;
+}
+
+html, body, #wrapper {
+    height:100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    table-layout: fixed;
+ }
+
+ .update-button {
+    width: 30% !important;
+}
+
+ #wrapper td {
+    vertical-align: middle;
+    text-align: center;
+ }
+
+ .phoneNumber .mat-form-field-infix {
+    display: inherit;
+    .mat-select { width: 17px; }
+  }
+
+  .mat-form-field {
+      margin-top: 0 !important;
+  }
+mat-label {
+font-weight: 500;
+font-size: 16px;
+color: #142850;
+}
+.auth-div{
+    border-radius: 5px 0 0 5px;
+}
+
+.auth-image {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 350px;
+    height: 350px;
+    margin-top: -175px;
+    margin-left: -175px;
+}
+.form-button[disabled="disabled"],
+.form-button:disabled {
+  opacity: 0.2;
+  cursor: not-allowed !important;
+}
+
+.form-button {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.auth-form {
+    box-shadow: 0px 0px 6px #DADADA;
+    border-radius: 5px;
+    // min-height: 50rem;
+}
+
+
+.tertiary-button {
+    background: #00A8CC !important;
+    color: white !important;
+}
+
+.primary-background {
+    background: #142850 !important;
+    color: white !important;
+}
+
+.tertiary-color {
+    color: #00A8CC !important
+}
+
+.screen-padding {
+    padding: 10px !important;
+}
+
+.small-screen {
+    font-size: 12px !important;
+}
+
+.primary-button {
+    background: #142850 !important;
+    color: white !important;
+}
+
+.transparent-button {
+    color: #142850 !important;
+    border: 1px solid #142850 !important;
+    background: transparent !important;
+}
+
+.topbeta-text {
+    font-weight: 600;
+    color: #142850;
+}
+
+.home-card.mat-card {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.blue-card.mat-card {
+    background: rgba(0, 168, 204, 0.09) !important;
+    height: 10rem;
+    box-shadow: none !important;
+}
+
+*:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+button {
+    min-width: auto !important;
+}
+
+img{
+    max-width: 100%;
+}
+
+.number-input {
+    position: relative;
+    width: 100%;
+  
+    &__wrapper {
+      border-radius: 3px;
+    //   border: solid 1px #696c70;
+    //   background-color: #3f3f3f;
+      width: calc(100% - 1.5em);
+      display: flex;
+  
+      span {
+        padding-right: 4px;
+      }
+
+      .country-code {
+        margin-top: 5px;
+        border-right: 1px solid gainsboro;
+        margin-right: 5px;
+      }
+  
+      input {
+        font-size: inherit;
+        color: inherit;
+        width: calc(100% - .83em);
+        padding: .3em 0 .3em .1em;
+        outline: none;
+        // height: 1em;
+        background-color: transparent;
+        border: none;
+        // text-align: right;
+        -moz-appearance: textfield;
+        -webkit-appearance: textfield;
+  
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      }
+    }
+  
+    &__btn {
+      padding: 1px 0.5em;
+      font-size: inherit;
+      position: absolute;
+      left: 10;
+      width: .75em;
+      height: .86em;
+
+      outline: none;
+      cursor: pointer;
+      &::after {
+        position: absolute;
+        content: "";
+        display: inline-block;
+        height: .25em;
+        width: .25em;
+      }
+    }
+  
+  }
+
+  .auth-form-large {
+      min-height: 50rem !important;
+  }
+
+  .count-down {
+    width: 50% !important;
+    color: #152a4f;
+    font-weight: 600;
+    display: block;
+    margin: auto;
+    padding: 5px 0px !important;
+}
+
+.count-down .count-down-row>div {
+    flex-grow: 1;
+    padding-bottom: 0px !important;
+    width: 25%;
+}
+
+.mat-simple-snackbar-action button {
+    background: #ffffff29 !important;
+    color: white !important;
+}
+
+.SnackSuccess {
+    background: #0b8359 !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    border-radius: 10px !important;
+}
+
+.SnackError {
+    background: #f44336 !important;
+    color: white !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+}
+
+.SnackWarn {
+    background: chocolate !important;
+    color: white !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+}
+
+.support {
+    width: 40%;
+}
+
+.auth-dialog >  mat-dialog-container {
+    height: 16rem !important;
+    padding: 20px !important;
+}
+
+.recharge-dialog >  mat-dialog-container {
+    padding: 20px !important;
+}
+
+.indicator {
+    font-size: 8px;
+    position: absolute;
+}
+
+.form-padding{
+    .mat-form-field-infix {
+    padding: 0.6rem 0 !important;
+    }
+}
+
+.mat-dialog-container {
+    padding: 0 !important;
+    overflow: hidden !important;
+    border-radius: 0 !important;
+}
+
+
+.SnackInfo {
+    background: #3092E2 !important;
+    color: white !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+}
+
+.mat-radio-container {
+    transform: scale(0.65);
+}
+
+@media (max-width: 575px) { 
+    .count-down {
+        width: 100% !important;
+    }
+    .support {
+        width: 90%;
+    }
+
+    .update-button {
+        width: 100% !important;
+    }
+}

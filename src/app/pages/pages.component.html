@@ -1,0 +1,101 @@
+<!-- <div class="container"> -->
+
+<mat-sidenav-container class="page-width"> 
+    <div class="header">
+    <mat-toolbar>
+        <mat-toolbar-row fxLayoutAlign="space-between center" ngClass.lt-sm="screen-padding" class="logo-toolbar theme-container">
+            <div fxLayout="row wrap" fxFlex="100">
+            <div fxFlex="40">
+                <div class="mt-1 logo-div">
+                    <img fxShow="false" fxShow.gt-xs src="assets/images/others/Topbeta-logo.svg" class="logo mouse-pointer" routerLink="/" ngClass.gt-md="logo-space" />
+                    <img fxShow="false" fxShow.lt-sm src="assets/images/others/xs-logo.png" class="logo mouse-pointer sm-logo" routerLink="/" />
+                    <div fxShow="false" fxShow.gt-xs
+                    [matMenuTriggerFor]="language"
+                    mat-icon-button
+                    class="lang-button mr-2 mouse-pointer primary-color ">
+                    <span>{{selected}}
+                      <mat-icon class="mySelect top-beta-icon">keyboard_arrow_down</mat-icon>
+                    </span>
+                </div>
+                  <mat-menu backdropClass="myMenu" #language="matMenu">
+                      <mat-radio-button [checked]="lang === selected" class="ml-2 primary-color " *ngFor="let lang of langs">{{lang}}</mat-radio-button>
+                  </mat-menu>
+                  <div routerLink="/help" class="primary-color help mouse-pointer" fxShow="false" fxShow.gt-xs routerLinkActive="nav-active">
+                    Help
+                  </div>
+
+             <div fxShow="false"class="about-us mouse-pointer" fxShow.gt-xs mat-button [matMenuTriggerFor]="AboutUSmenu">
+              <span>About Us
+                <mat-icon class="mySelect  top-beta-icon">keyboard_arrow_down</mat-icon>
+              </span>
+            </div>
+              <mat-menu #AboutUSmenu="matMenu">
+                <button mat-menu-item routerLink="/about-us">About Us</button>
+                <button mat-menu-item routerLink="/about-us/carriers">Carriers</button>
+                <button mat-menu-item routerLink="/about-us/countries">Countries</button>
+              </mat-menu>
+                </div>
+        </div>
+        <div fxFlex="20">
+
+      </div>
+            <div fxFlex="40" fxLayoutAlign="end center" class="pr-3">
+                <div class="mt-1 logo-div">
+                  <span *ngIf="authService.loggedIn()" routerLink="/account/invite-friends" class="primary-color mouse-pointer mr-3" fxShow="false" fxShow.gt-md routerLinkActive="nav-active">
+                    Invite Friends
+                  </span>
+
+                  <span *ngIf="authService.loggedIn()" routerLink="/history" class="primary-color mouse-pointer mr-2" fxShow="false" fxShow.gt-xs routerLinkActive="nav-active">
+                    Transaction History
+                  </span>
+
+
+                  <span [matMenuTriggerFor]="account" *ngIf="authService.loggedIn()"
+                   class="primary-color mr-2 mouse-pointer">
+                    <img [src]="photoUrl || 'assets/images/others/avatar.png'" class="rounded-circle mr-2">
+                    <span fxShow="false" fxShow.gt-xs class="primary-color mouse-pointer">
+                      {{authService?.currentUser?.firstName}}
+                      <mat-icon class="mt-1 top-beta-icon">keyboard_arrow_down</mat-icon>
+                  
+                    </span>
+
+                  </span>
+                  <mat-menu class="accountMenu" #account="matMenu">
+                    <button mat-menu-item routerLink="/account"
+                    fxLayoutAlign="center center">
+                      <mat-icon>person</mat-icon
+                      ><span class="user-menu-label">Account</span>
+                    </button>
+                    <div mat-menu-item (click)="onLogout()">
+                      <button mat-raised-button color="warn" class="log-out-button">Log Out</button>
+                    </div>
+                  </mat-menu>
+
+
+                  <span *ngIf="!authService.loggedIn()" routerLink="/sign-in" class="primary-color mr-2 mouse-pointer">
+                    Login
+                  </span>
+                  <button *ngIf="!authService.loggedIn()" ngClass.lt-sm="small-screen"
+                  class="primary-button register" mat-button
+                  routerLink="/register">Create Free Account</button>
+                </div>   
+            </div> 
+        </div> 
+        </mat-toolbar-row>
+    </mat-toolbar> 
+
+
+
+</div>
+
+    
+    <div class="theme-container main"> 
+        <router-outlet></router-outlet>
+    </div>
+
+    
+    <app-footer></app-footer>
+
+
+ </mat-sidenav-container>
+<!-- </div> -->

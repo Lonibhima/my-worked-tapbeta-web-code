@@ -1,0 +1,26 @@
+
+<div ngClass.gt-sm="container">
+    <div fxLayout="row wrap">
+        <div fxFlex="100" class="p-2 form-padding">
+
+            <mat-form-field  appearance="outline" class="w-100 mt-3 mb-3">
+                <div class="number-input">
+                  <div class="number-input__wrapper">
+              <span class="search"><mat-icon class="top-beta-icon">search</mat-icon></span> 
+              <input matInput placeholder="Search..." (keyup)="filter($event.target.value)">
+                  </div>
+                </div>
+          </mat-form-field>
+            <mat-accordion *ngFor = "let faq of filteredFaq">
+                <mat-expansion-panel class="mt-2">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                       <span class="help-title">{{faq.title}}</span>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="help-answer">{{faq.answer}}</div>
+                </mat-expansion-panel>
+              </mat-accordion>
+        </div>
+    </div> 
+</div>

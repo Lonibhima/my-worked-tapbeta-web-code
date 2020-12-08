@@ -1,0 +1,29 @@
+<mat-sidenav-container>
+    <mat-sidenav #sidenav [opened]="sidenavOpen" [mode]="sidenavOpen ? 'side' : 'over'" class="account-sidenav" perfectScrollbar>
+        <mat-nav-list class="mat-elevation-z1 h-100">
+            <br />
+            <div *ngIf="sidenavOpen">
+            <h6 class="primary-color legend add-weight text-center">My Account</h6>
+            <mat-divider></mat-divider>
+            <br />
+            </div>
+            <ng-container *ngFor="let link of links">
+            <mat-list-item [routerLink]="link.href" routerLinkActive="account-item-active" [routerLinkActiveOptions]="{exact:true}" class="account-item">              
+                <mat-icon matListIcon class="mat-icon-sm">{{link.icon}}</mat-icon>
+                <a matLine>{{ link.name }}</a>
+            </mat-list-item>
+        </ng-container>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="account-content" ngClass.gt-sm="p-left">
+        <div *ngIf="!sidenavOpen" fxLayout="row" fxLayoutAlign="space-between center" class="header-row mat-elevation-z1 text-muted">
+            <button mat-icon-button (click)="sidenav.toggle()">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <h6 class="primary-color legend">My Account</h6>
+        </div>
+        <div class="account-wrapper mat-elevation-z1 container">
+            <router-outlet></router-outlet>
+        </div>  
+    </mat-sidenav-content>
+</mat-sidenav-container>

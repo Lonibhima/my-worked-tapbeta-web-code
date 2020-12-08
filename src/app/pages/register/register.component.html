@@ -1,0 +1,136 @@
+
+<div ngClass.gt-sm="container">
+    <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-sm="50" class="p-2 primary-background auth-div">
+            <!-- <img class="auth-image" src="assets/images/others/auth-image.png" /> -->
+            <table id="wrapper">
+                <tr>
+                  <td><img src="assets/images/others/auth-image.png" alt="" /></td>
+                </tr>
+                <tr class="image-text">
+                    <p class="auth-welcome">Welcome to Topbeta</p>
+                    <span class="auth-intro">A platform where you buy airtime and data for yourself and others around the world</span>
+                </tr>
+              </table>
+
+        </div>
+        <div fxFlex="100" fxFlex.gt-sm="50" class="p-2 auth-form">
+            <h2 class="tertiary-color form-type text-center mb-3">CREATE ACCOUNT</h2>
+            <span class="form-new mb-3">Got an account? <span class="form-route mouse-pointer" routerLink="/sign-in"> Sign in</span></span>
+            <div *ngIf="countries; else loading">
+            <form [formGroup]="registerForm">
+            
+
+                <div class="row">
+                    <div class="col-sm-12 form-padding">
+                <mat-label>Country</mat-label>
+              
+                    <mat-form-field appearance="outline" class="w-100 mt-2" (click)=onStartCountryFilter()>
+                      <div class="number-input">
+                        <div class="number-input__wrapper">
+                          <span>
+                              <img *ngIf="registerForm?.get('flag')?.value"
+                              src="{{registerForm?.get('flag')?.value}}"
+                              class="top-up-logo">
+                          </span> 
+                          <input matInput type="text" formControlName="country"
+                          required [matAutocomplete]= "countrySelect"
+                          placeholder="Select Country">
+                          <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                          <mat-autocomplete autoActiveFirstOption #countrySelect="matAutocomplete" (optionSelected)="onCountrySelected()">
+                              <mat-option *ngFor="let country of filteredCountries | async" [value]="country.name">
+                                  {{country.name}}
+                              </mat-option>
+                            </mat-autocomplete>
+                      </div>
+                    </div>
+                    <mat-error>Country is required</mat-error>
+                </mat-form-field>
+                <mat-error class="error-text-class" *ngIf="!registerForm.get('selected').value
+                && registerForm.get('country').valid">Please select an option from the list</mat-error>
+
+                </div>
+                </div>
+                <mat-label>First Name</mat-label>
+
+                <mat-form-field  appearance="outline" class="w-100 mt-2">
+                    <input matInput placeholder="Full Name" formControlName="firstName" required>
+                    <mat-error *ngIf="registerForm.controls.firstName.errors?.required">First Name is required</mat-error>
+                    <mat-error *ngIf="registerForm.controls.firstName.hasError('minlength')">First Name isn't long enough, minimum of 3 characters</mat-error>
+                </mat-form-field>
+                <mat-label>Last Name</mat-label>
+
+                <mat-form-field  appearance="outline" class="w-100 mt-2">
+                    <input matInput placeholder="Last Name" formControlName="lastName" required>
+                    <mat-error *ngIf="registerForm.controls.lastName.errors?.required">Last Name is required</mat-error>
+                    <mat-error *ngIf="registerForm.controls.lastName.hasError('minlength')">Last Name isn't long enough, minimum of 3 characters</mat-error>
+                </mat-form-field>
+                <mat-label>Email Address</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-2">
+                    <input matInput placeholder="Email Address" formControlName="emailAddress" required>
+                    <mat-error *ngIf="registerForm.controls.emailAddress.errors?.required">Email is required</mat-error>
+                    <mat-error *ngIf="registerForm.controls.emailAddress.hasError('invalidEmail')">Invalid email address</mat-error>
+                </mat-form-field>
+                <div class="form-padding">
+                <mat-label>Phone Number</mat-label>
+                <mat-form-field  appearance="outline" class="w-100 mt-1">
+
+                      <div class="number-input">
+                        <div class="number-input__wrapper">
+                    <span class="country-code">{{ registerForm?.get('callingCodes')?.value }}</span> 
+                    <input maxlength="10" matInput placeholder="Phone Number" formControlName="phoneNumber" required>
+                        </div>
+                      </div>
+                    <mat-error *ngIf="registerForm.controls.phoneNumber.errors?.required">Phone Number is required</mat-error>
+                </mat-form-field>
+                </div>
+                <mat-label>Password</mat-label>
+
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                    <input type="password" matInput [type]="hide ? 'password' : 'text'"
+                    placeholder="Password" formControlName="password" required>
+                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                    (click)="$event.preventDefault()" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    <mat-error *ngIf="registerForm.controls.password.errors?.required">Password is required</mat-error>
+                    <mat-error *ngIf="registerForm.controls.password.hasError('minlength')">Password is too short, minimum of 4 characters</mat-error>
+                </mat-form-field>
+                <mat-label>Confirm Password</mat-label>
+                    <mat-form-field  appearance="outline" class="w-100 mt-1">
+                        <input matInput [type]="hide2 ? 'password' : 'text'"
+                        placeholder="Confirm Password" formControlName="confirmPassword" type="password" required>
+                        <button type="button" mat-icon-button matSuffix (click)="hide2 = !hide2"
+                        (click)="$event.preventDefault()"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
+                            <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                        <mat-error *ngIf="registerForm.controls.confirmPassword.errors?.required">Confirm Password is required</mat-error>
+                    <mat-error *ngIf="registerForm.controls.confirmPassword.hasError('minlength')">Password is too short, minimum of 4 characters</mat-error>
+                        <mat-error *ngIf="registerForm.controls.confirmPassword.hasError('mismatchedPasswords')">Passwords do not match</mat-error>
+                    </mat-form-field>
+            <span *ngIf="!invite" class="form-route display mouse-pointer mt-1" (click)="invite= true">Got invite code?</span>
+            <div *ngIf="invite">
+            <mat-label>Invite Code</mat-label>
+            <mat-form-field  appearance="outline" class="w-100 mt-2">
+                <input matInput placeholder="Invite Code" formControlName="inviteCode">
+            </mat-form-field>
+        </div>
+                <div class="text-center mt-2">
+                    <button [disabled]="registerForm.invalid" mat-raised-button class="primary-button form-button"
+                    (click)="onRegisterFormSubmit()">Create Account
+                    </button>
+                </div>      
+            <span class="display mt-2 align">By clicking Create Account you accept Topbeta's <span class="form-route mouse-pointer">Terms of Service</span> and <span class="form-route mouse-pointer">Privacy Policy</span></span>
+                
+            </form>
+        </div>
+        <ng-template #loading>
+            <ngx-spinner bdColor="rgba(51,51,51,0.7)" size="large" color="#fff" type="ball-clip-rotate"></ngx-spinner>     
+          </ng-template>
+    </div>
+
+
+        </div>
+    </div> 

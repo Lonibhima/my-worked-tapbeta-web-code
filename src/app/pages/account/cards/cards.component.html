@@ -1,0 +1,92 @@
+<div fxLayout="row wrap" *ngIf="!showForm">
+    <div fxFlex="100">
+        <h5 class="text-center primary-color">Card Management</h5>
+        <mat-divider class="mb-3"></mat-divider>
+
+    <div class="input-group ml-2 mr-2 mouse-pointer mb-2" (click)="addCard()">
+        <div class="input-group-prepend mb-2">
+            <mat-icon class="top-beta-icon payment-icon">add_circle</mat-icon>
+        </div>
+        <span class="primary-text add-text">Add card</span>
+        <div class="input-group-append ml-1 mb-2">
+            <mat-icon class="payment-icon">payment</mat-icon>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="myCards && myCards.length">
+        <div class="col-sm-6" *ngFor="let card of myCards">
+            <div class="col-sm-12 card-list">
+            <div class="tertiary-color default" *ngIf="card.isDefault">Default</div>
+            <div>{{card.cardNumber}}</div>
+            <div class="expiry">{{card.expiryDate}}</div>
+            <button mat-raised-button class="subscribe-button"
+             *ngIf="card.isDefault != true">Make Default</button>
+        </div>
+    </div>
+    </div>
+
+
+</div>
+</div> 
+
+ <!-- <div fxLayout="row wrap" *ngIf="showForm">
+    <div fxFlex="100" class="p-2">
+        <button mat-mini-fab color="warn" class="close" (click)="showForm = false">
+            <mat-icon>close</mat-icon>
+         </button>
+        <h5 class="text-center primary-color">Card Management</h5>
+        <mat-divider class="mb-3"></mat-divider>
+    <div *ngIf= "showForm">
+        <form [formGroup]="cardForm">
+    
+            <div class="row">
+                <div class="col-sm-12">
+            <mat-label>Card Number</mat-label>
+            <mat-form-field appearance="outline" class="w-100 mt-1">
+                <input (input)="addSpace()" maxlength="19" type="text" matInput placeholder="0000 0000 0000 0000" formControlName="cardNumber">
+                <mat-error>Card Number is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-sm-12">
+            <mat-label>Card Holder Name</mat-label>
+            <mat-form-field appearance="outline" class="w-100 mt-1">
+                <input type="text" matInput formControlName="cardholderName">
+                <mat-error>Card Holder Name is required</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+
+            <mat-label>Expiry Date</mat-label>
+            <mat-form-field  appearance="outline" class="w-100 mt-1">
+                <input matInput maxlength="5" type="text" (input)="checkDate()" formControlName="expiryDate">
+                <mat-error>Expiry date is required</mat-error>
+            </mat-form-field>
+            </div>
+
+            <div class="col-sm-6">
+
+            <mat-label>CVV</mat-label>
+            <mat-form-field appearance="outline" class="w-100 mt-1">
+                <input matInput type="text" maxlength="3" formControlName="cvv" required>
+                <mat-error>cvv is required</mat-error>
+            </mat-form-field>
+            </div>
+
+            <div class="col-sm-12">
+                <mat-checkbox  formControlName="isDefault" class="mr-3">
+                  Set as default
+                </mat-checkbox>
+              </div>
+
+        </div>
+
+            <div class="text-center mt-2">
+                <button [disabled]="cardForm.invalid" mat-raised-button class="primary-button form-button  update-button"
+                (click)="onSubmit()">Save
+                </button>
+            </div>                  
+        </form>  
+    </div>
+</div>
+</div> -->

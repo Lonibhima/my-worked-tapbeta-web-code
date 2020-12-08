@@ -1,0 +1,35 @@
+
+
+.rounded-circle {
+    width: 100px;
+    height: 100px;
+}
+
+.photo-container{
+    width: 7rem;
+    height: 7rem;
+    display: table;
+    margin: 0 auto;
+    position: relative;
+}
+
+.camera {
+    position: absolute;
+    right: 10px;
+    top: 67px;
+    color: white;
+    background: #00A8CC;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    padding-top: 5px;
+  .cam {
+    font-size: 16px;
+    margin: 0 auto;
+  }
+}
+
+.error-text-class{
+  margin-bottom: 15px;
+}

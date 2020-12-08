@@ -1,0 +1,9 @@
+.promo {
+  border-bottom: 1px solid #E9E9E9;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.right {
+  float: right;
+}

@@ -1,0 +1,172 @@
+.banner-background {
+    /* background-color: rgb(105, 116, 234) ; */
+    background-color: rgb(248, 248, 248);
+    position: relative;
+    color: white;
+    text-align: center !important;
+  }
+  .banner-heading {
+    position: absolute;
+    width: 75%;
+    top: 18%;
+    color: white !important;
+  }  
+  .heading{
+      margin-top: 2rem;
+      text-align: center !important;
+  }
+ .black-font{
+     text-align: center;
+     font-size: 1.2rem;
+    font-weight: bold;
+ }
+  .banner-heading {
+    font-size: 2.15rem;
+    font-weight: bold;
+    text-align: center;
+    color: #666666;
+  }
+
+
+.video-div{
+    width: 50vw;
+    margin: 0 auto;
+  }
+  .video-div iframe{
+    border-radius: 10px;
+  }
+.background-grediant{
+    background-color: cadetblue;
+    border-radius: 10px;
+}
+  @media (max-width: 768px) {
+    .heading{
+        margin-top: 2rem;
+        text-align: center !important;
+    }
+    .banner-heading {
+      position: absolute;
+      width: 75%;
+      top: 0%;
+      color: white !important;
+      font-size: 1.15rem;
+    }
+    .video-div{
+        width: 85vw !important;
+      }
+
+      .freechargeText{
+        padding: 2rem 2rem 0rem 2rem !important;
+      }
+  }
+.tagline{
+  font-size: 2rem !important;
+  text-align: center;
+  font-weight: bold;
+}
+  .freechargeimg{
+    border-radius: 146px;
+    width: 32rem;
+    padding: 1rem;
+  }
+  .freechargeText{
+    color: white;
+    font-size: 1.2rem;
+    padding: 5rem 2rem 3rem 2rem;
+  }
+
+  .inner-cred{
+    position: relative;
+    width:25rem;
+    margin:0;
+    }
+    .cred-number1{
+      font-size:2.25rem;
+      line-height: 2.25rem;
+      font-family: OpenSans-Bold;
+      color: #0097a7;
+      margin: 0;
+    }
+    .cred-number2{
+      font-size:2rem;
+      line-height: 2rem;
+      font-family: OpenSans-Bold;
+      color: #0097a7;
+      margin: 0 
+    }
+    .cred-name1{
+      font-size:1.35rem;
+      line-height: 1.45rem;
+      font-family: OpenSans-SemiBold;
+      color: #333;
+      margin:0 
+    }
+    .cred-name2{
+      font-size:1.25rem;
+      line-height: 1.45rem;
+      font-family: OpenSans-SemiBold;
+      color: #333;
+    }
+
+    .disc{
+        background: #fff;
+        -webkit-box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+        box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+        border: 1px solid #fafafa;
+        border-radius: 50%;
+        position: absolute;
+        transition: transform 0.3s ;
+        cursor: pointer;
+      }
+      .disc-1{
+        width:10rem;
+        height: 10rem;
+      }
+      // .disc-1 :hover,
+       .disc:hover{
+        transform: scale(1.15);
+      }
+      
+      .disc-2{
+        width: 7.5rem;
+        height: 7.5rem;
+        left: 11rem;
+      }
+      .disc-3{
+        width: 7.5rem;
+        height: 7.5rem;
+        left: 19rem;
+        top: 3rem;
+      }
+      .disc-1 div, .disc-2 div, .disc-3 div{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        place-content: center;
+        text-align: center;
+        align-content: center;
+      justify-content: center;
+      }
+      .more-about-topdata{
+        width: 95%;
+        margin: 0 auto;
+        margin-top: 0rem;
+        background: #E3F2F5;
+        border-radius: 10px;
+        padding: 2rem;
+      }
+      .icons-class{
+       width:3rem;
+       margin: 0 auto;
+       padding-bottom: 1rem;
+   
+      }
+     .about-text-class{
+         margin-top: 11rem;
+         font-weight: bold;
+         font-size: 1.2rem;
+     }
+     .gpay-img-class{
+        width: 87%;
+        height: 100%;
+     }

@@ -1,0 +1,25 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100">
+        <h5 class="text-center primary-color">Available promos</h5>
+        <mat-divider class="mb-3"></mat-divider>
+        <div *ngIf="promotions?.length > 0; else noPromo">
+        <div class="promo" *ngFor="let promo of promotions" [routerLink]="['/recharge']">
+            <div>
+                <img *ngIf="promo.billerName === 'mtn'" src="assets/images/others/mtn-logo.png" class="network-image mr-3 mb-2">
+                <img *ngIf="promo.billerName === 'airtel'" src="assets/images/others/airtel-logo.png" class="network-image mr-3 mb-2">
+                <img *ngIf="promo.billerName === 'glo'" src="assets/images/others/glo-logo.png" class="network-image mr-3 mb-2">
+                <img *ngIf="promo.billerName === '9mobile'" src="assets/images/others/9mobile-logo.png" class="network-image mr-3 mb-2">
+                <span class="network-name primary-color">MTN</span>
+            </div>
+            <div class="discount mb-3">
+            <span class="tertiary-color">{{promo.promotionMessage}}</span>
+            <mat-icon class="tertiary-color right">chevron_right</mat-icon>
+        </div>
+    </div>
+    </div>
+
+    <ng-template #noPromo>
+        <h5 class="text-center add-weight mt-3">No available promotions</h5>
+    </ng-template>
+</div>
+</div> 

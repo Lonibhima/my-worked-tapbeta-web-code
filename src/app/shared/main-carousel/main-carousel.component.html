@@ -1,0 +1,27 @@
+<div class="main-slider">
+  <div class="swiper-container h-100" [swiper]="config">
+    <div class="swiper-wrapper h-100">      
+      <div *ngFor="let slide of slides" class="swiper-slide">
+        <div [attr.data-background]="slide.image" class="slide-item swiper-lazy">
+            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+            <div class="mask"></div>  
+            <div fxLayout="column" fxLayoutAlign="center" class="content">
+              <span class="live" 
+              ngClass.lt-lg = 'mid-screen'
+              class="tertiary-color main-title">{{slide.title}}</span>
+              <span class="live"
+              ngClass.lt-lg = 'mid-screen' class="sub-title mb-2">{{slide.subtitle}}</span>
+              <div class="live" 
+              ngClass.lt-lg = 'mid-screen'>
+                <button *ngIf="!authService.loggedIn()" ngClass.lt-sm="small-screen"
+                class="primary-button register mt-3" mat-button
+                routerLink="/register">Create Free Account</button>
+              </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+
+    <div class="swiper-pagination white"></div>
+</div>
+</div>

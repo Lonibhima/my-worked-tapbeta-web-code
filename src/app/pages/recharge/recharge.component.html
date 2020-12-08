@@ -1,0 +1,596 @@
+<div ngClass.gt-sm="container">
+    <div fxLayout="row wrap">
+        <div fxFlex="100">
+            <div class="mid-form">
+                <mat-tab-group *ngIf="!showDataSummary && !showAirtimeSummary"> 
+                  <mat-tab label="Airtime">
+              <form ngNoForm class="mt-2">
+                  <div [formGroup]="airtimeGroup"> 
+                  <div *ngFor="let entry of airtimeGroup.controls; let i = index;" [formGroupName]="i" class="mb-3">
+
+                    <div *ngIf="i != 0" class="mt-2 mb-2 mouse-pointer text-center"
+                    class="input-group ml-2 mr-2 mouse-pointer"
+                fxLayoutAlign="center center" (click)="removeAirtimeForm(i)">
+                    <div class="input-group-prepend mb-2">
+                        <mat-icon color="warn" class="weight">close</mat-icon>
+                    </div>
+                    <span class="remove">Remove</span>
+                </div>
+                  <div class="row">
+                      <div class="col-sm-6 form-padding">
+            
+                        <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startAirtimeCountryFilter(i)">
+                          <div class="number-input">
+                            <div class="number-input__wrapper">
+                              <span>
+                                <img *ngIf="airtimeGroup.controls[i].controls.flag.value"
+                                src={{airtimeGroup.controls[i].controls.flag.value}}
+                                class="top-up-logo">
+                                
+                            </span> 
+                            <input matInput type="text" formControlName="country" (input)="airtimeCountryChange(i)"
+                            required [matAutocomplete]= "countrySelect" placeholder="Select Country">
+                            <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                            <mat-autocomplete autoActiveFirstOption #countrySelect="matAutocomplete"
+                            (optionSelected)="onAirtimeCountrySelected($event.option.value, i)">
+                                <mat-option *ngFor="let country of airtimeFilteredCountries" [value]="country.name">
+                                    {{country.name}}
+                                </mat-option>
+                              </mat-autocomplete>
+
+
+                          </div>
+                        </div>
+                        <mat-error>Country is required</mat-error>
+                    </mat-form-field>
+                    <mat-error class="error-text-class" *ngIf="!airtimeGroup.controls[i].controls.selected.value
+                    && airtimeGroup.controls[i].controls.country.valid">Please select an option from the list</mat-error>
+
+              </div>
+              <div class="col-sm-6 form-padding">
+            
+                  <mat-form-field  appearance="outline" class="w-100 mt-1">
+                        <div class="number-input">
+                          <div class="number-input__wrapper">
+                      <span class="country-code">{{ airtimeGroup.controls[i].controls.callingCodes.value }}</span> 
+                      <input maxlength="10" matInput placeholder="Enter Phone Number" formControlName="customerId"
+                      (input)="airtimePhoneNumberChanged(i)" required>
+                          </div>
+                        </div>
+                      <mat-error>Phone Number is required</mat-error>
+                  </mat-form-field>
+                  </div>
+            
+                  <div class="col-sm-6 form-padding">
+                          <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startAirtimeBillerFilter(i)">
+                          <div class="number-input">
+                            <div class="number-input__wrapper">
+                              <span>
+                                <img *ngIf="airtimeGroup.controls[i].controls.networkLogo.value"
+                                src={{airtimeGroup.controls[i].controls.networkLogo.value}}
+                                class="top-up-logo">
+                                
+                            </span> 
+                            <input matInput type="text" placeholder="Select Operator" 
+                            formControlName="billerName" (input)="airtimeBillerChanged(i)"
+                            required [matAutocomplete]= "airtimeBillerSelect">
+                            <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                            <mat-autocomplete autoActiveFirstOption #airtimeBillerSelect="matAutocomplete"
+                            (optionSelected)="onAirtimeBillerSelected($event.option.value, i)">
+                                <mat-option *ngFor="let biller of airtimeOperators" [value]="biller.name">
+                                    {{biller.name}}
+                                </mat-option>
+                              </mat-autocomplete>
+
+
+                          </div>
+                        </div>
+                        <mat-error>Operator is required</mat-error>
+
+                    </mat-form-field>
+                    <mat-error
+                    class="error-text-class"
+                    *ngIf="airtimeOperators?.length < 1 
+                    && airtimeGroup.controls[i].controls.country.valid"
+                    >Sorry, No supported operators for airtime in this country
+                  </mat-error>
+
+                  </div>
+            
+                  <div class="col-sm-6 form-padding">
+            
+            
+                  <mat-form-field appearance="outline" class="w-100 mt-1">
+
+                    <div class="number-input">
+                      <div class="number-input__wrapper">
+                  <span class="country-code">{{ airtimeGroup.controls[i].controls.currencySymbol.value }}</span> 
+                  <input matInput type="number" placeholder="Enter Amount" formControlName="amount" required>
+                </div>
+                    </div>                    
+                      <mat-error>Amount is required</mat-error>
+                  </mat-form-field>
+                  <mat-error class="max-maount-class" *ngIf="airtimeGroup.controls[i].controls.maxAmount.value > 0">Maximum amount for this operator is {{airtimeGroup.controls[i].controls.maxAmount.value | currency: airtimeGroup.controls[i].controls.currencySymbol.value}}</mat-error>
+
+                  </div>
+
+                  <div *ngIf="i == 0">
+
+                  <div class="col-sm-12" *ngIf="airtimeGroup.controls[i].controls.customerId.value">
+                    <mat-checkbox  formControlName="isDefault" class="mr-3">
+                      Set as default
+                    </mat-checkbox>
+                  </div>
+            
+            
+              <div class="col-sm-12">
+                <mat-checkbox  formControlName="isScheduled" class="mr-3">
+                  Auto Top Up
+                </mat-checkbox>
+              </div>
+            </div>
+
+            </div>
+
+              <ng-container *ngIf="airtimeGroup.controls[i].controls.isScheduled.value">
+                <div class="row">
+                <div class="col-sm-6">
+                  <mat-form-field  appearance="outline" class="w-100 mt-1">
+                    <mat-select placeholder="Schedule" formControlName="frequency" required>
+                        <mat-option *ngFor="let frequency of frequencies"
+                        [value]="frequency">
+                          {{frequency}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field> 
+                </div>
+                <div class="col-sm-6" *ngIf="airtimeGroup.controls[i].controls.frequency.value === 'Weekly' ||
+                airtimeGroup.controls[i].controls.frequency.value === 'Monthly'">
+                  <mat-form-field  appearance="outline"
+                  class="w-100 mt-1">
+                      <mat-select formControlName="dates" placeholder="Day of the week"
+                      formControlName="dates" *ngIf="airtimeGroup.controls[i].controls.frequency.value === 'Weekly'">
+                          <mat-option  *ngFor="let day of weekdays" [value]="day">
+                            {{day}}
+                          </mat-option>
+                        </mat-select>
+
+                        <mat-select placeholder="Day of the month"
+                        formControlName="dates"
+                        *ngIf="airtimeGroup.controls[i].controls.frequency.value === 'Monthly'">
+                            <mat-option *ngFor="let day of days" [value]="day">
+                              {{day}}
+                            </mat-option>
+                          </mat-select>
+                  </mat-form-field> 
+                </div>
+                <div class="col-sm-6" *ngIf="airtimeGroup.controls[i].controls.frequency.value === 'BiMonthly'"></div>
+
+                <div class="col-sm-6" *ngIf="airtimeGroup.controls[i].controls.frequency.value === 'BiMonthly'">
+                  <mat-form-field  appearance="outline"
+                  class="w-100 mt-1">
+                          <mat-select placeholder="First Date"
+                          formControlName="firstDate">
+                              <mat-option *ngFor="let day of days" [value]="day">
+                                {{day}}
+                              </mat-option>
+                            </mat-select>
+                      <mat-error>Date is required</mat-error>
+                  </mat-form-field> 
+              </div>
+  
+              <div class="col-sm-6" *ngIf="airtimeGroup.controls[i].controls.frequency.value === 'BiMonthly'">
+                  <mat-form-field  appearance="outline"
+                  class="w-100 mt-1">
+                          <mat-select placeholder="Second Date"
+                          formControlName="secondDate">
+                              <mat-option *ngFor="let day of days" [value]="day">
+                                {{day}}
+                              </mat-option>
+                            </mat-select>
+                      <mat-error>Date is required</mat-error>
+                  </mat-form-field> 
+              </div>
+            </div>
+              </ng-container>
+            
+              <div class="col-sm-12" *ngIf=" i === airtimeGroup.controls.length - 1">
+                <div class="input-group ml-2 mr-2 mouse-pointer"
+                fxLayoutAlign="center center" (click)="addAirtimeForm()">
+                    <div class="input-group-prepend mb-2">
+                        <mat-icon class="top-beta-icon payment-icon">add_circle</mat-icon>
+                    </div>
+                    <span class="primary-text add-text">Add another entry</span>
+                </div>
+              </div>
+            </div>
+                  </div>
+            
+            
+                  <div class="text-center mt-2 mb-3">
+                      <button type="button" [disabled]="airtimeGroup.invalid" mat-raised-button class="primary-button form-button update-button"
+                      (click)="showAirtimeSummary = true">Recharge
+                      </button>
+                  </div>                  
+              </form>
+              </mat-tab>
+              <mat-tab label="Data">
+                  <form ngNoForm class="mt-2">
+                      <div [formGroup]="dataGroup">
+                  <div *ngFor="let entry of dataGroup.controls; let i = index;" [formGroupName]="i" class="mb-3">
+                    <div *ngIf="i != 0" class="mt-2 mb-2 mouse-pointer text-center"
+                    class="input-group ml-2 mr-2 mouse-pointer"
+                fxLayoutAlign="center center" (click)="removeDataForm(i)">
+                    <div class="input-group-prepend mb-2">
+                        <mat-icon color="warn" class="weight">close</mat-icon>
+                    </div>
+                    <span class="remove">Remove</span>
+                </div>
+            
+                      <div class="row">
+                          <div class="col-sm-6 form-padding">
+
+                            <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startDataCountryFilter(i)">
+                              <div class="number-input">
+                                <div class="number-input__wrapper">
+                                  <span>
+                                    <img *ngIf="dataGroup.controls[i].controls.flag.value"
+                                    src="{{dataGroup.controls[i].controls.flag.value}}"
+                                    class="top-up-logo">
+                                    
+                                </span> 
+                                <input matInput type="text" formControlName="country" (input)="dataCountryChange(i)"
+                                required [matAutocomplete]= "countrySelect" placeholder="Select Country">
+                                <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                                <mat-autocomplete autoActiveFirstOption #countrySelect="matAutocomplete"
+                                (optionSelected)="onDataCountrySelected($event.option.value, i)">
+                                    <mat-option *ngFor="let country of dataFilteredCountries" [value]="country.name">
+                                        {{country.name}}
+                                    </mat-option>
+                                  </mat-autocomplete>
+                              </div>
+                            </div>
+                            <mat-error>Country is required</mat-error>
+                        </mat-form-field>
+                    <mat-error class="error-text-class" *ngIf="!dataGroup.controls[i].controls.selected.value
+                    && dataGroup.controls[i].controls.country.valid">Please select an option from the list</mat-error>
+
+            
+                  </div>
+                  <div class="col-sm-6 form-padding">
+            
+                      <mat-form-field  appearance="outline" class="w-100 mt-1">
+                            <div class="number-input">
+                              <div class="number-input__wrapper">
+                          <span class="country-code">{{ dataGroup.controls[i].controls.callingCodes.value }}</span> 
+                          <input maxlength="10" matInput placeholder="Enter Phone Number" formControlName="customerId"
+                          required>
+                              </div>
+                            </div>
+                          <mat-error>Phone Number is required</mat-error>
+                      </mat-form-field>
+                      </div>
+            
+                      <div class="col-sm-6 form-padding">
+                        <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startDataBillerFilter(i)">
+                          <div class="number-input">
+                            <div class="number-input__wrapper">
+                              <span>
+                                <img *ngIf="dataGroup.controls[i].controls.networkLogo.value"
+                                src={{dataGroup.controls[i].controls.networkLogo.value}}
+                                class="top-up-logo">
+                                
+                            </span> 
+                            <input matInput type="text" placeholder="Select Operator" 
+                            formControlName="billerName" (input)="dataBillerChanged(i)"
+                            required [matAutocomplete]= "dataBillerSelect">
+                            <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                            <mat-autocomplete autoActiveFirstOption #dataBillerSelect="matAutocomplete"
+                            (optionSelected)="onDataBillerSelected($event.option.value, i)">
+                                <mat-option *ngFor="let biller of dataOperators" [value]="biller.name">
+                                    {{biller.name}}
+                                </mat-option>
+                              </mat-autocomplete>
+                          </div>
+                        </div>
+                        <mat-error>Operator is required</mat-error>
+
+                    </mat-form-field>
+                    <mat-error class="error-text-class"
+                    *ngIf="dataOperators?.length < 1 && dataGroup.controls[i].controls.country.valid"
+                    >Sorry, No supported operators for data in this country</mat-error>
+
+                      </div>
+            
+                      <div class="col-sm-6 form-padding">
+                      <mat-form-field appearance="outline" class="w-100 mt-1" (click)="startDataFilter()">
+                        <div class="number-input">
+                          <div class="number-input__wrapper">
+                      <span class="country-code">{{ dataGroup.controls[i].controls.currencySymbol.value }}</span> 
+                          <input matInput type="text" formControlName="amount" (input)="dataChanged(i)"
+                          required [matAutocomplete]= "dataSelect" placeholder="Select Data Bundle">
+                          <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                          <mat-autocomplete autoActiveFirstOption
+                          (optionSelected)="onDataSelected($event.option.value, i)"
+                          #dataSelect="matAutocomplete">
+                              <mat-option *ngFor="let data of filteredData" [value]="data">
+                                  {{data}}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </div>
+                        </div>  
+                          <mat-error>Data type is required</mat-error>
+                      </mat-form-field>
+                      <mat-error class="error-text-class"
+                      *ngIf="dataTopUp?.length < 1 && dataGroup.controls[i].controls.billerName.valid"
+                      >Sorry, No available data for this operator selection</mat-error>
+                      </div>
+
+                      <div *ngIf="i == 0">
+                      <div class="col-sm-12" *ngIf="dataGroup.controls[i].controls.customerId.value">
+                        <mat-checkbox  formControlName="isDefault" class="mr-3">
+                          Set as default
+                        </mat-checkbox>
+                      </div>
+            
+            
+            
+                  <div class="col-sm-12">
+                    <mat-checkbox  formControlName="isScheduled" class="mr-3">
+                      Auto Top Up
+                    </mat-checkbox>
+                  </div>
+                  </div>
+                      </div>
+                  <ng-container *ngIf="dataGroup.controls[i].controls.isScheduled.value">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <mat-form-field  appearance="outline" class="w-100 mt-1">
+                          <mat-select placeholder="Schedule" formControlName="frequency" required>
+                              <mat-option *ngFor="let frequency of frequencies"
+                              [value]="frequency">
+                                {{frequency}}
+                              </mat-option>
+                            </mat-select>
+                      </mat-form-field> 
+                      </div>
+                      <div class="col-sm-6" *ngIf="dataGroup.controls[i].controls.frequency.value === 'Weekly' ||
+                      dataGroup.controls[i].controls.frequency.value === 'Monthly'">
+                        <mat-form-field  appearance="outline"
+                        class="w-100 mt-1">
+                            <mat-select formControlName="dates" placeholder="Day of the week"
+                            formControlName="dates" *ngIf="dataGroup.controls[i].controls.frequency.value === 'Weekly'">
+                                <mat-option  *ngFor="let day of weekdays" [value]="day">
+                                  {{day}}
+                                </mat-option>
+                              </mat-select>
+      
+                              <mat-select placeholder="Day of the month"
+                              formControlName="dates"
+                              *ngIf="dataGroup.controls[i].controls.frequency.value === 'Monthly'">
+                                  <mat-option *ngFor="let day of days" [value]="day">
+                                    {{day}}
+                                  </mat-option>
+                                </mat-select>
+                        </mat-form-field> 
+                      </div>
+                      <div class="col-sm-6" *ngIf="dataGroup.controls[i].controls.frequency.value === 'BiMonthly'"></div>
+      
+                      <div class="col-sm-6" *ngIf="dataGroup.controls[i].controls.frequency.value === 'BiMonthly'">
+                        <mat-form-field  appearance="outline"
+                        class="w-100 mt-1">
+                                <mat-select placeholder="First Date"
+                                formControlName="firstDate">
+                                    <mat-option *ngFor="let day of days" [value]="day">
+                                      {{day}}
+                                    </mat-option>
+                                  </mat-select>
+                            <mat-error>Date is required</mat-error>
+                        </mat-form-field> 
+                    </div>
+        
+                    <div class="col-sm-6" *ngIf="dataGroup.controls[i].controls.frequency.value === 'BiMonthly'">
+                        <mat-form-field  appearance="outline"
+                        class="w-100 mt-1">
+                                <mat-select placeholder="Second Date"
+                                formControlName="secondDate">
+                                    <mat-option *ngFor="let day of days" [value]="day">
+                                      {{day}}
+                                    </mat-option>
+                                  </mat-select>
+                            <mat-error>Date is required</mat-error>
+                        </mat-form-field> 
+                    </div>
+                  </div>
+                  </ng-container>
+            
+                  <div class="col-sm-12" *ngIf=" i === dataGroup.controls.length - 1">
+                    <div class="input-group ml-2 mr-2 mouse-pointer"
+                    fxLayoutAlign="center center" (click)="addDataForm()">
+                        <div class="input-group-prepend mb-2">
+                            <mat-icon class="top-beta-icon payment-icon">add_circle</mat-icon>
+                        </div>
+                        <span class="primary-text add-text">Add another entry</span>
+                    </div>
+                  </div>
+                </div>
+            
+
+                  </div>
+
+
+                      <div class="text-center mt-2 mb-3">
+                          <button type="button" [disabled]="dataGroup.invalid" mat-raised-button class="primary-button form-button update-button"
+                          (click)="showDataSummary = true">Recharge
+                          </button>
+                      </div>                  
+                  </form>
+              </mat-tab>
+              </mat-tab-group>
+
+
+
+              <div *ngIf="showDataSummary" class="show-summury-class">
+
+                <div class="input-group ml-2 mr-2 mouse-pointer"
+                (click)="showDataSummary = false" 
+                fxLayoutAlign="end center">
+                   <div class="input-group-prepend mb-2">
+                       <mat-icon class="top-beta-icon back-icon key-backspace-class" >keyboard_backspace</mat-icon>
+                   </div>
+                   <span class="primary-text add-text mr-2 back-button-class">Back</span>
+               </div>
+                <div class="primary-text">Payment Summary</div>
+                <mat-divider class="mb-3"></mat-divider>
+                <form ngNoForm>
+                  <div [formGroup]="dataGroup">
+                <div class="mt-2 mb-2" *ngFor="let entry of dataGroup.controls; let i = index;" [formGroupName]="i"> 
+                <div class="row">
+                  <div class="col-sm-7">
+                    Phone Number:
+                  </div>
+                  <div class="col-sm-5">
+                    {{dataGroup.controls[i].controls.callingCodes.value}}<span>{{dataGroup.controls[i].controls.customerId.value}}</span>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-sm-7">
+                    Operator:
+                  </div>
+                  <div class="col-sm-5">
+                    {{dataGroup.controls[i].controls.billerName.value}}
+                  </div>
+                </div>
+            
+                <div class="row mt-2">
+            
+                  <div class="col-sm-7">
+                    Data Top up:
+                  </div>
+                  <div class="col-sm-5 primary-text">
+                    {{dataGroup.controls[i].controls.currencySymbol.value}}{{dataGroup.controls[i].controls.amount.value}}
+                  </div>
+            
+                </div>
+            
+            
+                <div class="row mt-2">
+                  <div class="col-sm-7">
+                    Processing Fee:
+                  </div>
+                  <div class="col-sm-5 primary-text">
+                    {{dataGroup.controls[i].controls.currencySymbol.value}}{{processingFee}}
+                  </div>
+            
+                </div>
+            
+                <div class="row mt-2">
+            
+            
+                  <div class="col-sm-7">
+                    Total:
+                  </div>
+                  <div class="col-sm-5 primary-text">
+                {{dataGroup.controls[i].controls.currencySymbol.value}}{{+(trimData(dataGroup.controls[i].controls.amount.value)) + +(processingFee)}}
+
+                  </div>
+                </div>
+
+                <mat-divider class="mt-2"></mat-divider>
+
+                
+                </div>
+              </div>
+                </form>
+            
+                <div class="text-center mb-2 confirm-details-class">
+                  <button mat-raised-button class="primary-button form-button"
+                  (click)="buyData()">Confirm Details
+                  </button>
+              </div>  
+            
+              </div>
+
+              <div *ngIf="showAirtimeSummary" class="show-summury-class">
+                <form ngNoForm>
+                  <div [formGroup]="airtimeGroup">
+                <div class="input-group ml-2 mr-2 mouse-pointer"
+                (click)="showAirtimeSummary = false" 
+                fxLayoutAlign="end center">
+                   <div class="input-group-prepend mb-2">
+                       <mat-icon class="top-beta-icon back-icon key-backspace-class">keyboard_backspace</mat-icon>
+                   </div>
+                   <span class="primary-text add-text mr-2 back-button-class">Back</span>
+               </div>
+                <div class="primary-text">Payment Summary</div>
+                <mat-divider class="mb-3"></mat-divider>
+                <div class="mt-2 mb-2" *ngFor="let entry of airtimeGroup.controls; let i = index;" [formGroupName]="i"> 
+                <div class="row mt-2 mb-2">
+                  <div class="col-sm-7">
+                    Phone Number:
+                  </div>
+                  <div class="col-sm-5">
+                    {{airtimeGroup.controls[i].controls.callingCodes.value}}<span>{{airtimeGroup.controls[i].controls.customerId.value}}</span>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-sm-7">
+                    Operator:
+                  </div>
+                  <div class="col-sm-5">
+                    {{airtimeGroup.controls[i].controls.billerName.value}}
+                  </div>
+                </div>
+            
+                <div class="row mt-2">
+            
+                  <div class="col-sm-7">
+                    Airtime Recharge:
+                  </div>
+                  <div class="col-sm-5 primary-text">
+                    {{airtimeGroup.controls[i].controls.currencySymbol.value}}<span>{{airtimeGroup.controls[i].controls.amount.value}}</span>
+                  </div>
+            
+                </div>
+            
+            
+                <div class="row mt-2">
+                  <div class="col-sm-7">
+                    Processing Fee:
+                  </div>
+                  <div class="col-sm-5 primary-text">
+                    {{airtimeGroup.controls[i].controls.currencySymbol.value}}{{processingFee}}
+                  </div>
+            
+                </div>
+            
+                <div class="row mt-2">
+            
+            
+                  <div class="col-sm-7">
+                    Total:
+                  </div>
+                  <div class="col-sm-5 primary-text">
+                    {{airtimeGroup.controls[i].controls.currencySymbol.value}}{{+(airtimeGroup.controls[i].controls.amount.value) + (processingFee)}}
+                  </div>
+                </div>
+
+                <mat-divider class="mt-2"></mat-divider>
+                
+                </div>
+              </div>
+                </form>
+            
+                <div class="text-center mb-2 confirm-details-class">
+                  <button mat-raised-button class="primary-button form-button"
+                  (click)="buyAirtime()">Confirm Details
+                  </button>
+              </div>  
+            
+              </div>
+            
+              </div>
+            
+        </div>
+    </div> 
+</div>

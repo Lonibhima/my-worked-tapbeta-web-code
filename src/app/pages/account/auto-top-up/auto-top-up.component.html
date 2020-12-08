@@ -1,0 +1,490 @@
+<div fxLayout="row wrap" *ngIf="!showNew">
+    <div fxFlex="100">
+        <h5 class="text-center primary-color">Auto Top up settings</h5>
+        <!-- <mat-divider class="mb-3"></mat-divider> -->
+
+        <div class="row top-up-header">
+            <div class="col-sm-6 top-up-text">Scheduled top up</div>
+            <div class="col-sm-6">
+                <div class="input-group ml-2 mr-2 mouse-pointer" (click)="showNew= true" 
+                fxLayoutAlign="end center">
+                    <div class="input-group-prepend mb-2">
+                        <mat-icon class="top-beta-icon payment-icon">add_circle</mat-icon>
+                    </div>
+                    <span class="primary-text add-text">Add New</span>
+                </div>
+            </div>
+        </div>
+
+        <mat-tab-group *ngIf="userTopUps.length > 0; else noTopUp"> 
+            <mat-tab label="All">
+                <div class="top-ups">
+                    <div class="top-up-item mt-3" *ngFor="let topup of userTopUps">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span>{{topup.callingCodes}}</span>{{topup.customerId}}
+                            </div>
+                            <div class="col-sm-6">
+                                <div fxLayoutAlign="end center">
+                                    <span class="primary-text add-text"><span>{{topup.currencySymbol}}</span>{{topup.transactionAmount}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-sm-6">
+                            <div class="topbeta-text" *ngIf="topup.isAirtime == true">Airtime</div>
+                            <div class="topbeta-text" *ngIf="topup.isAirtime == false">Data</div>
+                        </div>
+                        </div>
+        
+                        <div class="row mt-1">
+                            <div class="col-md-4">
+                                <div>
+                                    <img *ngIf="topup.networkLogo"
+                                    src="{{topup.networkLogo}}"
+                                    class="top-up-logo">
+                                    <span class="network-name primary-color">{{topup.billerName}}</span>
+                                    </div>
+                            </div>
+                            <div class="col-md-8 layout">
+                                <div fxLayoutAlign="end center">
+                                    <div class="row">
+                                    
+
+                                    <div class="col-sm-6 col-md-4 text-size-class">
+                                        <mat-form-field  appearance="outline" class="w-100 mt-1">
+                                            <input matInput placeholder="Schedule" [value]="topup.frequency" readonly>
+                                        </mat-form-field> 
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <mat-form-field  appearance="outline"
+                                        class="w-100 mt-1">
+                                        <input matInput placeholder="Dates" [value]="topup.dates" readonly>
+                                        </mat-form-field> 
+                                    </div>
+        
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                    <button mat-raised-button class="subscribe-button"
+                    (click)="subscribe(topup)" *ngIf="topup.status === 'Unsubscribed'">Subscribe</button>
+                    <button mat-raised-button class="delete-button"
+                    (click)="unsubscribe(topup.id)" *ngIf="topup.status === 'Active'">Unsubscribe</button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Subscribed">
+                <div class="top-ups">
+                    <div class="top-up-item mt-3" *ngFor="let topup of activeTopUps">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span>{{topup.callingCodes}}</span>{{topup.customerId}}
+                            </div>
+                            <div class="col-sm-6">
+                                <div fxLayoutAlign="end center">
+                                    <span class="primary-text add-text"><span>{{topup.currencySymbol}}</span>{{topup.transactionAmount | currency: "₦"}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-sm-6">
+                            <div class="topbeta-text" *ngIf="topup.isAirtime == true">Airtime</div>
+                            <div class="topbeta-text" *ngIf="topup.isAirtime == false">Data</div>
+                        </div>
+                        </div>
+        
+                        <div class="row mt-1">
+                            <div class="col-md-4">
+                                <div>
+                                <img *ngIf="topup.networkLogo"
+                                src="{{topup.networkLogo}}"
+                                class="top-up-logo">
+                                <span class="network-name primary-color">{{topup.billerName}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-8 layout">
+                                <div fxLayoutAlign="end center">
+                                    <div class="row">
+                                    
+
+                                    <div  class="col-sm-6 col-md-4">
+                                        <mat-form-field  appearance="outline" class="w-100 mt-1">
+                                            <input matInput placeholder="Schedule" [value]="topup.frequency" readonly>
+                                        </mat-form-field> 
+                                    </div>
+                                    <div  class="col-sm-6 col-md-4">
+                                        <mat-form-field  appearance="outline"
+                                        class="w-100 mt-1">
+                                        <input matInput placeholder="Dates" [value]="topup.dates" readonly>
+                                        </mat-form-field> 
+                                    </div>
+        
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                    <button mat-raised-button class="delete-button"
+                    (click)="unsubscribe(topup.id)" *ngIf="topup.status === 'Active'">Unsubscribe</button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Unsubscribed">
+                <div class="top-ups">
+                    <div class="top-up-item mt-3" *ngFor="let topup of inactiveTopUps">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span>{{topup.callingCodes}}</span>{{topup.customerId}}
+                            </div>
+                            <div class="col-sm-6">
+                                <div fxLayoutAlign="end center">
+                                    <span class="primary-text add-text"><span>{{topup.currencySymbol}}</span>{{topup.transactionAmount | currency: "₦"}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-sm-6">
+                            <div class="topbeta-text" *ngIf="topup.isAirtime == true">Airtime</div>
+                            <div class="topbeta-text" *ngIf="topup.isAirtime == false">Data</div>
+                        </div>
+                        </div>
+        
+                        <div class="row mt-1">
+                            <div class="col-md-4">
+                                <div>
+                                    <img *ngIf="topup.networkLogo"
+                                    src="{{topup.networkLogo}}"
+                                    class="top-up-logo">
+                                    <span class="network-name primary-color">{{topup.billerName}}</span>
+                                    </div>
+                            </div>
+                            <div class="col-md-8 layout">
+                                <div fxLayoutAlign="end center">
+                                    <div class="row">
+                                    
+
+                                    <div  class="col-sm-6 col-md-4">
+                                        <mat-form-field  appearance="outline" class="w-100 mt-1">
+                                            <input matInput placeholder="Schedule" [value]="topup.frequency" readonly>
+                                        </mat-form-field> 
+                                    </div>
+                                    <div  class="col-sm-6 col-md-4">
+                                        <mat-form-field  appearance="outline"
+                                        class="w-100 mt-1">
+                                        <input matInput placeholder="Dates" [value]="topup.dates" readonly>
+                                        </mat-form-field> 
+                                    </div>
+        
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                    <button mat-raised-button class="subscribe-button"
+                    (click)="subscribe(topup)" *ngIf="topup.status === 'Unsubscribed'">Subscribe</button>
+                    </div>
+                </div>
+            </mat-tab>
+          </mat-tab-group>
+
+          <ng-template #noTopUp>
+            <h6 class="text-center mt-3 mb-3">No Scheduled top up</h6>
+          </ng-template>
+    </div>
+</div> 
+
+
+<div fxLayout="row wrap" *ngIf="showNew">
+    <div fxFlex="100">
+        <!-- <button mat-mini-fab > -->
+            <mat-icon color="warn" class="close" (click)="showNew = false">
+                close</mat-icon>
+         <!-- </button> -->
+        <h5 class="text-center primary-color">New Auto Top up</h5>
+        <mat-divider class="mb-3"></mat-divider>
+
+        <mat-tab-group> 
+            <mat-tab label="Airtime">
+        <form [formGroup]="airtimeForm" class="mt-2">
+    
+            <div class="row">
+                <div class="col-sm-6 form-padding">
+            <mat-label>Country</mat-label>
+
+            <mat-form-field appearance="outline" class="w-100 mt-1">
+                <div class="number-input">
+                  <div class="number-input__wrapper">
+                    <span>
+                        <img *ngIf="airtimeForm.get('flag').value"
+                        src="{{airtimeForm.get('flag').value}}"
+                        class="top-up-logo">
+                        
+                    </span> 
+                  <input matInput type="text" formControlName="country"
+                  required [matAutocomplete]= "countrySelect"
+                  >
+                  <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                  <mat-autocomplete autoActiveFirstOption #countrySelect="matAutocomplete">
+                      <mat-option 
+                      (click)="onAirtimeCountrySelected()"
+                      *ngFor="let country of airtimeFilteredCountries | async" [value]="country.name">
+                          {{country.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                </div>
+              </div>
+              <mat-error>Country is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6 form-padding">
+
+            <mat-label>Phone Number</mat-label>
+            <mat-form-field  appearance="outline" class="w-100 mt-1">
+                  <div class="number-input">
+                    <div class="number-input__wrapper">
+                <span class="country-code">{{ airtimeForm.get('callingCodes').value }}</span> 
+                <input matInput maxlength="10" placeholder="Phone Number" formControlName="customerId"
+                (input)="airtimePhoneNumberChanged()"
+                required>
+                    </div>
+                  </div>
+                <mat-error>Phone Number is required</mat-error>
+            </mat-form-field>
+            </div>
+
+            <div class="col-sm-6 form-padding">
+            <mat-label>Network Provider</mat-label>
+            <mat-form-field  appearance="outline" class="w-100 mt-1">
+                  <div class="number-input">
+                    <div class="number-input__wrapper">
+                <span>
+                    <img *ngIf="airtimeForm.get('networkLogo').value"
+                    src="{{airtimeForm.get('networkLogo').value}}"
+                    class="top-up-logo">
+                </span> 
+                <input matInput placeholder="Network provider" formControlName="billerName"
+                required readonly>
+                    </div>
+                  </div>
+                <mat-error>Network provider is required</mat-error>
+            </mat-form-field>
+            </div>
+
+            <div class="col-sm-6 form-padding">
+
+            <mat-label>Amount</mat-label>
+
+            <mat-form-field appearance="outline" class="w-100 mt-1">
+                <div class="number-input">
+                    <div class="number-input__wrapper">
+                <span class="country-code">{{ airtimeForm.get('currencySymbol').value }}</span> 
+                <input matInput type="text" placeholder="Amount" formControlName="amount" required>
+            </div>
+                  </div>
+                  <mat-error>Amount is required</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-sm-6">
+                <mat-form-field  appearance="outline" class="w-100 mt-1">
+                    <mat-select placeholder="Schedule" formControlName="frequency" required>
+                        <mat-option *ngFor="let frequency of frequencies"
+                        [value]="frequency">
+                          {{frequency}}
+                        </mat-option>
+                      </mat-select>
+                <mat-error>Frequency is required</mat-error>
+
+                </mat-form-field> 
+            </div>
+            <div class="col-sm-6" *ngIf="airtimeForm.get('frequency').value === 'Weekly'
+            || airtimeForm.get('frequency').value === 'Monthly'">
+                <mat-form-field  appearance="outline"
+                class="w-100 mt-1">
+                    <mat-select formControlName="dates" placeholder="Day of the week"
+                    formControlName="dates" *ngIf="airtimeForm.get('frequency').value === 'Weekly'">
+                        <mat-option  *ngFor="let day of weekdays" [value]="day">
+                          {{day}}
+                        </mat-option>
+                      </mat-select>
+
+                      <mat-select placeholder="Day of the month"
+                      formControlName="dates"
+                      *ngIf="airtimeForm.get('frequency').value === 'Monthly'">
+                          <mat-option *ngFor="let day of days" [value]="day">
+                            {{day}}
+                          </mat-option>
+                        </mat-select>
+
+                    <mat-error>Date is required</mat-error>
+
+                </mat-form-field> 
+            </div>
+            <div class="col-sm-6" *ngIf="airtimeForm.get('frequency').value === 'BiMonthly'"></div>
+
+
+            <div class="col-sm-6" *ngIf="airtimeForm.get('frequency').value === 'BiMonthly'">
+                <mat-form-field  appearance="outline"
+                class="w-100 mt-1">
+                        <mat-select placeholder="First Date"
+                        formControlName="firstDate">
+                            <mat-option  *ngFor="let day of days" [value]="day">
+                              {{day}}
+                            </mat-option>
+                          </mat-select>
+                    <mat-error>Date is required</mat-error>
+                </mat-form-field> 
+            </div>
+
+            <div class="col-sm-6" *ngIf="airtimeForm.get('frequency').value === 'BiMonthly'">
+                <mat-form-field  appearance="outline"
+                class="w-100 mt-1">
+                        <mat-select placeholder="Second Date"
+                        formControlName="secondDate">
+                            <mat-option  *ngFor="let day of days" [value]="day">
+                              {{day}}
+                            </mat-option>
+                          </mat-select>
+                    <mat-error>Date is required</mat-error>
+                </mat-form-field> 
+            </div>
+
+        </div>
+
+            <div class="text-center mt-2">
+                <button [disabled]="airtimeForm.invalid" mat-raised-button class="primary-button form-button  update-button"
+                (click)="onBuyAirtime()">Save
+                </button>
+            </div>                  
+        </form>
+        </mat-tab>
+        <mat-tab label="Data">
+            <form [formGroup]="dataForm" class="mt-2">
+    
+                <div class="row">
+                    <div class="col-sm-6 form-padding">
+                <mat-label>Country</mat-label>
+    
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                    <div class="number-input">
+                      <div class="number-input__wrapper">
+                        <span>
+                            <img *ngIf="dataForm.get('flag').value"
+                            src="{{dataForm.get('flag').value}}"
+                            class="top-up-logo">
+                            
+                        </span> 
+                      <input matInput type="text" formControlName="country"
+                      required [matAutocomplete]= "countryDataSelect"
+                      >
+                      <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                      <mat-autocomplete autoActiveFirstOption #countryDataSelect="matAutocomplete">
+                          <mat-option
+                          (click)="onDataCountrySelected()"
+                          *ngFor="let country of dataFilteredCountries | async" [value]="country.name">
+                              {{country.name}}
+                          </mat-option>
+                        </mat-autocomplete>
+                    </div>
+                  </div>
+                  <mat-error>Country is required</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 form-padding">
+    
+                <mat-label>Phone Number</mat-label>
+                <mat-form-field  appearance="outline" class="w-100 mt-1">
+                      <div class="number-input">
+                        <div class="number-input__wrapper">
+                    <span class="country-code">{{  dataForm.get('callingCodes').value }}</span> 
+                    <input matInput placeholder="Phone Number" formControlName="customerId" 
+                    (input)="dataPhoneNumberChanged()"
+                    required>
+                        </div>
+                      </div>
+                    <mat-error>Phone Number is required</mat-error>
+                </mat-form-field>
+                </div>
+    
+                <div class="col-sm-6 form-padding">
+                <mat-label>Network Provider</mat-label>
+                <mat-form-field  appearance="outline" class="w-100 mt-1">
+                      <div class="number-input">
+                        <div class="number-input__wrapper">
+                    <span>
+                        <img *ngIf="dataForm.get('networkLogo').value"
+                        src="{{dataForm.get('networkLogo').value}}"
+                        class="top-up-logo">
+                    </span> 
+                    <input matInput placeholder="Network provider" formControlName="billerName"
+                    required readonly>
+                        </div>
+                      </div>
+                    <mat-error>Network provider is required</mat-error>
+                </mat-form-field>
+                </div>
+    
+                <div class="col-sm-6">
+    
+                <mat-label>Data type</mat-label>
+    
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                    <input matInput type="text" formControlName="dataType"
+                    required [matAutocomplete]= "dataSelect">
+                    <mat-icon matSuffix class="mouse-pointer">keyboard_arrow_down</mat-icon>
+                    <mat-autocomplete autoActiveFirstOption #dataSelect="matAutocomplete">
+                        <mat-option *ngFor="let data of filteredData | async" [value]="data">
+                            {{data}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    <mat-error>Data type is required</mat-error>
+                </mat-form-field>
+                </div>
+    
+                <div class="col-sm-6">
+                    <mat-form-field  appearance="outline" class="w-100 mt-1">
+                        <mat-select placeholder="Schedule" formControlName="frequency">
+                            <mat-option *ngFor="let frequency of frequencies"
+                            [value]="frequency">
+                              {{frequency}}
+                            </mat-option>
+                          </mat-select>
+                    <mat-error>Frequency is required</mat-error>
+    
+                    </mat-form-field> 
+                </div>
+                <div class="col-sm-6">
+                    <mat-form-field  appearance="outline"
+                    class="w-100 mt-1">
+                        <mat-select formControlName="dates" placeholder="Schedule"
+                        formControlName="dates" *ngIf="dataForm.get('frequency').value === 'Weekly'
+                        || dataForm.get('frequency').value === 'Bi-weekly'">
+                            <mat-option  *ngFor="let day of weekdays" [value]="day">
+                              {{day}}
+                            </mat-option>
+                          </mat-select>
+    
+                          <mat-select placeholder="Schedule"
+                          formControlName="dates" *ngIf="dataForm.get('frequency').value === 'Monthly'">
+                              <mat-option *ngFor="let day of days" [value]="day">
+                                {{day}}
+                              </mat-option>
+                            </mat-select>
+    
+                    <mat-error>Date is required</mat-error>
+    
+                    </mat-form-field> 
+                </div>
+    
+            </div>
+    
+                <div class="text-center mt-2">
+                    <button [disabled]="dataForm.invalid" mat-raised-button class="primary-button form-button  update-button"
+                    (click)="onBuyData()">Save
+                    </button>
+                </div>                  
+            </form>
+        </mat-tab> 
+        </mat-tab-group>
+    </div>
+</div> 
+

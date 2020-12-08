@@ -1,0 +1,59 @@
+
+<div ngClass.gt-sm="container" *ngIf="myTransactions && myTransactions.length > 0; else noTransaction">
+    <div fxLayout="row wrap">
+        <div fxFlex="100">
+
+            <mat-accordion *ngFor = "let history of myTransactions">
+                <mat-expansion-panel class="mt-2">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                       <span class="help-title">{{history.month}}</span>
+                       <span class="help-title total">{{history.total | currency: "₦"}}</span>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <ng-container  *ngFor="let transaction of history.transactions">
+                  <div class="row mb-2 primary-color">
+                    <div class="col-sm-12">
+                    <div class="tertiary-color date">{{transaction.createDate | date:'mediumDate'}}</div>
+                    </div>
+                    <div class="col-sm-9">
+                      <div class="row mt-2">
+                        <div class="col-sm-6">
+
+                          <div class="input-group ml-1">
+                            <div class="input-group-prepend" fxLayoutAlign="start center">
+                              <span class="dot mr-2"></span>
+                            </div>
+                            {{transaction.transactionType}}
+                          </div>
+                        </div>
+                        <div class="col-sm-6 amount">
+                          {{transaction.transactionAmount | currency: "₦"}}                        
+                        </div>
+                      </div>
+                      <div class="row mt-2">
+                        <div class="col-sm-6">
+                          +234{{transaction.customerId}}
+                        </div>
+                        <div class="col-sm-6">
+                          {{transaction.createDate | date:'shortTime'}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-3 mt-2">
+                    <button mat-raised-button class="transparent-button re-use" (click)="reUse(transaction.id)">Re-use</button>
+                    </div>
+
+                  </div>
+                  <mat-divider class="mb-2"></mat-divider>
+                </ng-container>
+
+                </mat-expansion-panel>
+              </mat-accordion>
+        </div>
+    </div> 
+</div>
+
+<ng-template #noTransaction>
+  <h3 class="text-center mb-3 mt-3">No Transactions</h3>
+</ng-template>

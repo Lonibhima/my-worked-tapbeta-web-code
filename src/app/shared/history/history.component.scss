@@ -1,0 +1,49 @@
+.auth{
+    white-space: nowrap;
+    padding: 7px 14px;
+    font-weight: 500;    
+}
+
+.help-title {
+    font-size: 16px;
+    color: #152a4f;
+    font-weight: 800;
+} 
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(0, 168, 204, 0.15);
+    display: block;
+}
+
+.date {
+    font-weight: 500;
+}
+
+.amount {
+    font-weight: 800;
+}
+
+.total {
+    display: block;
+    margin-left: auto;
+}
+
+.re-use {
+    height: 30px;
+    line-height: 1;
+    padding: 4px;
+    margin: 0;
+}
+  
+//   .label {
+//     text-align: center;
+//     font-family: HelveticaNeue;
+//     font-size: 12px;
+//     color: #ffffff;
+//     margin-top: 2px;
+//     width: calc(100% - 18px);
+//   }
+  

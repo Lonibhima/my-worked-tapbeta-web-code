@@ -1,0 +1,16 @@
+.auth {
+  white-space: nowrap;
+  padding: 7px 14px;
+  font-weight: 500;
+}
+
+.help-title {
+  font-size: 15px;
+  color: #152a4f;
+  font-weight: 500;
+}
+
+.search {
+  margin-top: -6px;
+  margin-right: 2rem !important;
+}

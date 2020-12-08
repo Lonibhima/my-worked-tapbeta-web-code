@@ -1,0 +1,65 @@
+.banner-background {
+    /* background-color: rgb(105, 116, 234) ; */
+    background-color: rgb(248, 248, 248);
+    position: relative;
+    color: white;
+    text-align: center !important;
+  }
+  .banner-heading {
+    position: absolute;
+    width: 75%;
+    top: 18%;
+    color: white !important;
+  }  
+  .heading{
+      margin-top: 2rem;
+      text-align: center !important;
+  }
+  .banner-heading {
+    font-size: 2.15rem;
+    font-weight: bold;
+    text-align: center;
+    color: #666666;
+  }
+  .tagline{
+    font-size: 2rem !important;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .search-country{
+    font-size: 1.4rem !important;
+    text-align: center;
+    font-weight: bold;
+  }
+  .Search-your-country{
+    width: 25rem;
+  }
+  .mat-card-class{
+    margin: 1rem;
+  }
+
+
+  .container { // for desktop & tablet
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.container div {
+    width: 25%
+}
+.contry-flag{
+  height: 23%;
+  width: 23%;
+  border-radius: 7px;
+}
+.all-country-class{
+  width: 75%;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .Search-your-country{
+    width: 20rem;
+  }
+}

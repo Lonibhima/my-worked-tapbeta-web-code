@@ -1,0 +1,33 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100">
+        <h5 class="text-center primary-color">Referral bonus</h5>
+        <mat-divider class="mb-3"></mat-divider>
+        <span class="mb-3">Enjoy <span class="tertiary-color">5% discount</span> on next purchase for each friend you invite, your friend enjoys <span class="tertiary-color">5% discount</span> on his/her first recharge as well</span>
+        <div class="reward primary-color mt-2">Reward points</div>
+        <div class="row">
+            <div class="col-sm-7">
+        <div class="mt-1 amount tertiary-color">{{user.rewardAmount}}</div>
+            </div>
+            <!-- <div class="col-sm-5">
+                <span class="reward primary-color">Use For: </span>
+                    <button mat-raised-button class="primary-button mr-1">Airtime</button>
+                    <button mat-raised-button class="transparent-button">Data</button>
+            </div> -->
+        </div>
+
+        <div class="reward primary-color mt-2">Referred friends</div>
+        <div class="mt-1 amount tertiary-color">{{friends}}</div>    
+        
+        <div class="reward primary-color mt-2">Referral link</div>
+        <div class="mt-1 form-padding">
+            <mat-form-field appearance="outline" class="w-100">
+            <div class="number-input">
+                <div class="number-input__wrapper">
+            <input type="text" matInput [(ngModel)]= "referralCode" readonly>
+            <span class="mouse-pointer copy" (click)="copy()">Copy</span> 
+                </div>
+              </div>
+            </mat-form-field>
+        </div>   
+    </div>
+</div> 

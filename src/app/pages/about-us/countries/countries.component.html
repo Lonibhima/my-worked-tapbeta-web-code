@@ -1,0 +1,40 @@
+
+<div fxLayout="column" fxLayout.lt-md="column" fxLAyoutAlign="center center" class="banner-background">
+    <img src="../../../../assets/images/others/Countries banner.png" style="width: 100%;" alt="working-Header">
+  </div>
+<br><br>
+
+  <div fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="1rem">
+    <div fxFlex="82%" style="margin: 0 auto;">
+      <p class="tagline">Recharge in over 145+ countries</p>
+    </div>
+  </div>
+<br>
+
+
+
+
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center flex-end " fxLayoutAlign.lt-md="center center"
+  fxLayoutGap="3rem"  class="more-about topbeta-text ">
+    <div fxFlex="25%" fxLayout="row" fxLayoutAlign="end end">
+        <p class="search-country">Search your country</p>
+    </div>
+    <div fxFlex="30%" fxLayout="row" fxLayoutAlign="center">
+        <div class="form-group Search-your-country">
+            <input type="text" class="form-control" placeholder="Search your country" [(ngModel)]="term">
+        </div>
+    </div>
+    </div>
+<br>
+    <div fxLayout.xs="column" fxLayout="row wrap" fxLayoutGap="10px" ngClass.gt-xs="ml-10" class="all-country-class">
+        <div fxFlex.sm="0 1 calc(50%-10px)" fxFlex.md="0 1 calc(33%-10px)" fxFlex.gt-md="0 1 calc(25%-10px)"  *ngFor="let country of allcountryname | filter:term">
+            <div class="mat-card-class"> <img src={{country.flag}} class="contry-flag">  {{ country.name}}</div>
+        </div>
+      </div>
+
+
+      <div fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="center center" *ngIf="loader">
+        <div fxFlex="10%" style="margin: 0 auto;">
+            <mat-spinner ></mat-spinner>
+        </div>
+      </div>

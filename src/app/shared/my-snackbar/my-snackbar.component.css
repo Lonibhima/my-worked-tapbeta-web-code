@@ -1,0 +1,85 @@
+
+.notif-icon {
+    margin: auto 10px auto 0 !important;
+    font-size: 15px !important;
+}
+
+.notif-title{
+    font-weight: bolder;
+    font-size: 18px;
+    color: black !important;
+}
+
+.snackClose {
+    cursor: pointer;
+    color: black;
+    position: absolute;
+    right: 15px;
+}
+
+.notif-message {
+    font-size: 15px;
+    color: black !important;
+    margin-left: 25px;
+}
+
+.snackdone {
+    color: #0b8359;
+}
+
+.snackerror {
+    color: #ff3300;
+}
+
+.snackwarn {
+    color: chocolate;
+}
+
+.snackinfo {
+    color: #3092E2;
+}
+
+.SnackSuccess {
+    background: #f2f2f2 !important;
+    color: black !important;
+    min-width: 260px !important;
+    border-radius: 10px !important;
+    border-left: 10px solid #0b8359;
+    max-width: 300px !important;
+    border-radius: 10px !important;
+    margin-left: auto !important;
+}
+
+.SnackError {
+    background: #f2f2f2 !important;
+    color: black !important;
+    min-width: 260px !important;
+    border-radius: 10px !important;
+    border-left: 10px solid #ff3300;
+    max-width: 300px !important;
+    border-radius: 10px !important;
+    margin-left: auto !important;
+}
+
+.SnackWarn {
+    background: #f2f2f2 !important;
+    color: black !important;
+    min-width: 260px !important;
+    border-radius: 10px !important;
+    border-left: 10px solid chocolate;
+    max-width: 300px !important;
+    border-radius: 10px !important;
+    margin-left: auto !important;
+}
+
+
+.SnackInfo {
+    background: #f2f2f2 !important;
+    color: black !important;
+    min-width: 260px !important;
+    border-radius: 10px !important;
+    border-left: 10px solid #3092E2;
+    max-width: 300px !important;
+    border-radius: 10px !important;
+    margin-left: auto !important;
+}

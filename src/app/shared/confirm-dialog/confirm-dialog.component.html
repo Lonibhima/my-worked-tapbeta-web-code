@@ -1,0 +1,22 @@
+
+  <div class="input-group ml-2 mr-2 mouse-pointer"
+  [matDialogClose]>
+     <div class="input-group-prepend mb-2">
+         <mat-icon class="top-beta-icon back-icon">keyboard_backspace</mat-icon>
+     </div>
+     <span class="primary-text add-text mr-2" class="back-button-class">Back</span>
+ </div>
+
+ <mat-divider class="mb-3"></mat-divider>
+
+
+<div mat-dialog-content ngClass.gt-md="space-height">
+    <p class="dialog-message">You have to create an account or login to use this feature</p>
+</div>
+
+<div mat-dialog-actions>
+    <div fxLayout="row" fxLayoutAlign="center center" class="w-100">
+        <button mat-raised-button class="transparent-button mr-3" (click)="login()">Login</button>
+        <button mat-raised-button class="primary-button" (click)="register()">Create Free Account</button>
+    </div>  
+</div>

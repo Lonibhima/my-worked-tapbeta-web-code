@@ -1,0 +1,58 @@
+<div ngClass.gt-sm="container">
+    <div fxLayout="row wrap">
+        <div fxFlex="100" fxShow="false" fxShow.gt-sm fxFlex.gt-sm="50" class="p-2 primary-background auth-div">
+            <table id="wrapper">
+                <tr>
+                  <td><img class="img-width" src="assets/images/others/auth-image.png" alt="" /></td>
+                </tr>
+                <tr class="image-text">
+                    <p class="auth-welcome">Welcome to Topbeta</p>
+                    <span class="auth-intro">A platform where you buy airtime and data for yourself and others around the world</span>
+                </tr>
+              </table>
+        </div>
+        <div fxFlex="100" fxFlex.gt-sm="50" class="p-2 auth-form" ngClass.gt-sm="auth-form-large">
+            <table id="wrapper">
+                <tr>
+                <td>
+            <h2 class="tertiary-color form-type text-center mb-3">SIGN IN</h2>
+            <span class="form-new">New to Topbeta? <span class="form-route mouse-pointer" routerLink="/register"> Sign up</span></span>
+            <form [formGroup]="loginForm">
+               
+                <mat-label class="float mt-2">Email Address</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-2">
+                    <input matInput placeholder="Email" formControlName="emailAddress" required>
+                    <mat-error *ngIf="loginForm.controls.emailAddress.errors?.required">Email is required</mat-error>
+                    <mat-error *ngIf="loginForm.controls.emailAddress.hasError('invalidEmail')">Invalid email address</mat-error>
+                </mat-form-field>
+                <mat-label class="float">Password</mat-label>
+
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                    <input type="password" matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password" required (keyup.enter)="onLoginFormSubmit()">
+                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                    (click)="$event.stopPropagation()" 
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    <mat-error *ngIf="loginForm.controls.password.errors?.required">Password is required</mat-error>
+                    <mat-error *ngIf="loginForm.controls.password.hasError('minlength')">Password is too short, minimum of 4 characters</mat-error>
+                </mat-form-field> 
+
+
+                <!-- <div class="w-100 mt-1">
+                <mat-checkbox formControlName="rememberMe" class="mr-3">
+                    Remember Me
+                </mat-checkbox>
+            </div> -->
+                <div class="text-center mt-2">
+                    <button [disabled]="loginForm.invalid" mat-raised-button class="primary-button form-button" (click)="onLoginFormSubmit()">Login
+                    </button>
+                </div>              
+            </form>
+            <span routerLink="/reset-password" class="form-route display mouse-pointer mt-3">Forgot password?</span>
+        </td>
+        </tr>
+        </table>
+        </div>
+    </div> 
+</div>

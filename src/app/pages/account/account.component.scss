@@ -1,0 +1,57 @@
+.account-sidenav{
+    width: 280px;
+    padding: 2px;
+    box-shadow: 0px 3px 6px #00000029 !important;
+    margin-bottom: 5px;
+    .mat-nav-list{
+        box-sizing: border-box;
+        overflow: auto;
+        .mat-list-item{
+            height: 36px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+    }
+
+
+
+    .account-item {
+        font-weight: 500 !important;
+        font-size: 16px !important;
+        line-height: 20px !important;
+        color: #142850 !important;
+    }
+
+    .account-item-active {
+        color: #00A8CC !important;
+    }
+}
+.account-content{
+    min-height: 500px;
+    padding: 2px;
+    overflow: hidden;
+    &.p-left{
+        padding-left: 16px;
+    }
+
+    .legend {
+        display: block !important;
+        margin: auto !important;
+        font-weight: 600;
+    }
+    .header-row{
+        background: #fff;
+        padding: 0 16px;
+        height: 56px;
+    }
+    .account-wrapper{
+        margin-top: 16px;
+        padding: 16px;
+        background: #fff;
+        min-height: calc(100vh - 272px);
+        min-height: -o-calc(100vh - 272px); /* opera */
+        min-height: -webkit-calc(100vh - 272px); /* google, safari */
+        min-height: -moz-calc(100vh - 272px); /* firefox */
+    }
+}
+
